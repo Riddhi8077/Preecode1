@@ -1,48 +1,47 @@
 const mongoose = require('mongoose');
 
 const validateMongoURI = (uri) => {
+  // Don't crash synchronously - return error details instead
+  const errors = [];
+
   if (!uri) {
-    console.error('❌ MONGO_URI is not defined in .env');
-    console.error('  → Create a .env file in the project root with:');
-    console.error('    MONGO_URI=mongodb+srv://user:pass@cluster.mongodb.net/dbname');
-    process.exit(1);
-  }
+    errors.push('MONGO_URI is not defined in .env');
+  } else {
+    // Detect accidental whitespace or line breaks
+    const trimmed = uri.trim();
+    if (trimmed !== uri) {
+      console.warn('⚠️  WARNING: MONGO_URI contains leading/trailing whitespace — auto-trimmed');
+    }
+    if (/[\r\n]/.test(trimmed)) {
+      errors.push('MONGO_URI contains line breaks');
+    }
 
-  // Detect accidental whitespace or line breaks
-  const trimmed = uri.trim();
-  if (trimmed !== uri) {
-    console.warn('⚠️  WARNING: MONGO_URI contains leading/trailing whitespace — auto-trimmed');
-  }
-  if (/[\r\n]/.test(trimmed)) {
-    console.error('❌ MONGO_URI contains line breaks — fix your .env file');
-    process.exit(1);
-  }
+    // Validate URI format
+    if (!trimmed.startsWith('mongodb://') && !trimmed.startsWith('mongodb+srv://')) {
+      errors.push('MONGO_URI must start with mongodb:// or mongodb+srv://');
+    }
 
-  // Validate URI format
-  if (!trimmed.startsWith('mongodb://') && !trimmed.startsWith('mongodb+srv://')) {
-    console.error('❌ MONGO_URI must start with mongodb:// or mongodb+srv://');
-    process.exit(1);
-  }
+    // Check for database name in URI
+    const dbMatch = trimmed.match(/\.mongodb\.net\/([^?]*)/);
+    if (dbMatch && !dbMatch[1]) {
+      console.warn('⚠️  WARNING: No database name specified in MONGO_URI — MongoDB will use "test" by default');
+    }
 
-  // Check for database name in URI
-  const dbMatch = trimmed.match(/\.mongodb\.net\/([^?]*)/);
-  if (dbMatch && !dbMatch[1]) {
-    console.warn('⚠️  WARNING: No database name specified in MONGO_URI — MongoDB will use "test" by default');
-  }
+    // Detect special characters in password that need URL-encoding
+    const credMatch = trimmed.match(/:\/\/([^:]+):([^@]+)@/);
+    if (credMatch) {
+      const password = credMatch[2];
+      if (/[%@:\/\?#\[\]]/.test(password) && !/%[0-9A-Fa-f]{2}/.test(password)) {
+        errors.push('MONGO_URI password contains unencoded special characters');
+      }
+    }
 
-  // Detect special characters in password that need URL-encoding
-  const credMatch = trimmed.match(/:\/\/([^:]+):([^@]+)@/);
-  if (credMatch) {
-    const password = credMatch[2];
-    if (/[%@:\/\?#\[\]]/.test(password) && !/%[0-9A-Fa-f]{2}/.test(password)) {
-      console.error('❌ MONGO_URI password contains special characters that require URL-encoding');
-      console.error('  → Use encodeURIComponent() on your password, or encode manually:');
-      console.error('    @ → %40   : → %3A   / → %2F   ? → %3F   # → %23');
-      process.exit(1);
+    if (errors.length === 0) {
+      return { valid: true, uri: trimmed };
     }
   }
 
-  return trimmed;
+  return { valid: false, errors };
 };
 
 const classifyError = (error) => {
@@ -92,21 +91,28 @@ const classifyError = (error) => {
 };
 
 const connectDB = async () => {
-  const uri = validateMongoURI(process.env.MONGO_URI);
+  // Validate URI safely - don't crash synchronously
+  const validation = validateMongoURI(process.env.MONGO_URI);
+
+  if (!validation.valid) {
+    const errorMsg = validation.errors.join('; ');
+    throw new Error(`MongoDB URI validation failed: ${errorMsg}`);
+  }
 
   try {
-    const conn = await mongoose.connect(uri);
+    const conn = await mongoose.connect(validation.uri);
     console.log(`✅ MongoDB Connected`);
     console.log(`   Host: ${conn.connection.host}`);
     console.log(`   Database: ${conn.connection.name}`);
+    return conn;
   } catch (error) {
     const diagnosis = classifyError(error);
     console.error(`\n❌ MONGODB CONNECTION FAILED [${diagnosis.type}]`);
-    console.error(`Error: ${error.message}\n`);
-    console.error('Possible fixes:');
-    diagnosis.advice.forEach((tip) => console.error(`  → ${tip}`));
+    console.error(`   Error: ${error.message}\n`);
+    console.error('   Troubleshooting:');
+    diagnosis.advice.forEach((tip) => console.error(`     → ${tip}`));
     console.error('');
-    process.exit(1);
+    throw error; // Re-throw so server.js can handle it
   }
 };
 
