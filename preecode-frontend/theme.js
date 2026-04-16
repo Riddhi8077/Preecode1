@@ -26,11 +26,11 @@
       '--border-strong':  'rgba(15,23,42,0.12)',
 
       /* Accent */
-      '--accent':         '#f97316',
-      '--accent-hover':   '#ea580c',
+      '--accent':         '#fb923c',
+      '--accent-hover':   '#f97316',
       '--accent-soft':    '#fff7ed',
-      '--accent-border':  'rgba(249,115,22,0.2)',
-      '--accent-glow':    'rgba(249,115,22,0.06)',
+      '--accent-border':  'rgba(251,146,60,0.2)',
+      '--accent-glow':    'rgba(251,146,60,0.06)',
 
       /* Semantic */
       '--success':        '#16a34a',
@@ -79,11 +79,11 @@
       '--border-strong':  'rgba(255,255,255,0.12)',
 
       /* Accent */
-      '--accent':         '#f97316',
-      '--accent-hover':   '#fb923c',
-      '--accent-soft':    'rgba(249,115,22,0.1)',
-      '--accent-border':  'rgba(249,115,22,0.2)',
-      '--accent-glow':    'rgba(249,115,22,0.12)',
+      '--accent':         '#fb923c',
+      '--accent-hover':   '#f97316',
+      '--accent-soft':    'rgba(251,146,60,0.1)',
+      '--accent-border':  'rgba(251,146,60,0.2)',
+      '--accent-glow':    'rgba(251,146,60,0.12)',
 
       /* Semantic */
       '--success':        '#4ade80',
@@ -105,7 +105,7 @@
       '--skeleton-to':    'rgba(255,255,255,0.08)',
 
       /* Focus */
-      '--focus-ring':     'rgba(249,115,22,0.15)',
+      '--focus-ring':     'rgba(251,146,60,0.15)',
     }
   };
 
