@@ -1,10 +1,5 @@
 {
-  "buildCommand": "echo 'Static site - no build needed'",
+  "buildCommand": "",
   "outputDirectory": "preecode-frontend",
-  "rewrites": [
-    {
-      "source": "/:path*",
-      "destination": "/$1"
-    }
-  ]
+  "public": "preecode-frontend"
 }
