@@ -15,7 +15,7 @@ async function generateResponse(messages, options = {}) {
     console.log('Using OpenRouter API');
 
     const requestBody = {
-      model: 'openai/gpt-oss-120b',
+      model: 'openai/gpt-4o-mini',
       messages: messages,
       temperature: options.temperature || 0.7,
       max_tokens: options.maxTokens || 2048,
