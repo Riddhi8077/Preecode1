@@ -415,62 +415,89 @@
   <!-- ════════════════════════════════════
        CAREER READINESS SECTION
   ════════════════════════════════════ -->
-  <section class="section" id="problem">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="section-header reveal">
-        <p class="section-label">The Gap</p>
-        <h2 class="section-title">Most developers prepare for coding.<br/>Not for interviews.</h2>
+  <section id="problem" class="reveal" style="padding: 100px 0;">
+    <div class="max-w-4xl mx-auto px-6">
+
+      <!-- Header -->
+      <div style="text-align:center; margin-bottom: 56px;">
+        <span style="display:inline-block; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#f97316; margin-bottom:14px;">The Problem</span>
+        <h2 style="font-size:clamp(26px,4vw,42px); font-weight:700; letter-spacing:-0.03em; line-height:1.2; margin:0 0 14px;" class="txt-main">Great coders.<br/>Failed interviews.</h2>
+        <p style="font-size:16px; color:#6e6e73; margin:0;">Coding skill alone doesn't get you hired.</p>
       </div>
 
-      <div class="probsol-grid reveal">
-        <!-- Traditional Prep Column -->
-        <div class="probsol-col">
-          <h3 class="probsol-heading probsol-heading--problem">Traditional Prep</h3>
-          <div class="probsol-list">
-            <div class="probsol-item probsol-item--problem">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-              <span>Solve problems without understanding weak areas</span>
-            </div>
-            <div class="probsol-item probsol-item--problem">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-              <span>No feedback on communication or thinking process</span>
-            </div>
-            <div class="probsol-item probsol-item--problem">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-              <span>Practice coding, but fail real interviews</span>
-            </div>
-            <div class="probsol-item probsol-item--problem">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-              <span>No connection between practice and job outcomes</span>
-            </div>
-          </div>
+      <!-- Two cards -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+
+        <!-- Without -->
+        <div class="gap-card gap-card--bad">
+          <p class="gap-card-label">Without Preecode</p>
+          <ul class="gap-ul">
+            <li><span class="gap-x">✕</span>No insight into weak areas</li>
+            <li><span class="gap-x">✕</span>No interview feedback</li>
+            <li><span class="gap-x">✕</span>5 tools, zero clarity</li>
+            <li><span class="gap-x">✕</span>Practice coding, freeze in interviews</li>
+          </ul>
         </div>
 
-        <!-- With Preecode Column -->
-        <div class="probsol-col probsol-col--solution">
-          <h3 class="probsol-heading probsol-heading--solution">With <span class="brand-dark">Pree</span><span class="brand-accent" style="color: #F97316">code</span></h3>
-          <div class="probsol-list">
-            <div class="probsol-item probsol-item--solution">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-              <span>Identify skill gaps automatically from real coding sessions</span>
-            </div>
-            <div class="probsol-item probsol-item--solution">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-              <span>AI-powered feedback on problem solving and communication</span>
-            </div>
-            <div class="probsol-item probsol-item--solution">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-              <span>Practice coding + simulate real interview scenarios</span>
-            </div>
-            <div class="probsol-item probsol-item--solution">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-              <span>Clear path from practice → interview → job readiness</span>
-            </div>
-          </div>
+        <!-- With Preecode -->
+        <div class="gap-card gap-card--good">
+          <p class="gap-card-label" style="color:#f97316;">With Preecode</p>
+          <ul class="gap-ul">
+            <li><span class="gap-check">✓</span>AI spots your gaps automatically</li>
+            <li><span class="gap-check">✓</span>Real interview coaching, 24/7</li>
+            <li><span class="gap-check">✓</span>One platform, one profile</li>
+            <li><span class="gap-check">✓</span>First commit to first offer</li>
+          </ul>
         </div>
+
       </div>
     </div>
   </section>
+
+  <style>
+    .txt-main { color: #1d1d1f; }
+    @media (prefers-color-scheme: dark) { .txt-main { color: #f5f5f7; } }
+
+    .gap-card {
+      padding: 28px;
+      border-radius: 18px;
+    }
+    .gap-card--bad {
+      background: rgba(239,68,68,0.04);
+      border: 1px solid rgba(239,68,68,0.12);
+    }
+    .gap-card--good {
+      background: rgba(249,115,22,0.05);
+      border: 1px solid rgba(249,115,22,0.18);
+    }
+    @media (prefers-color-scheme: dark) {
+      .gap-card--bad  { background: rgba(239,68,68,0.07); border-color: rgba(239,68,68,0.18); }
+      .gap-card--good { background: rgba(249,115,22,0.07); border-color: rgba(249,115,22,0.22); }
+    }
+    .gap-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #aeaeb2;
+      margin: 0 0 18px;
+    }
+    .gap-ul {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 13px;
+      font-size: 14px; line-height: 1.5;
+      color: #3a3a3c;
+    }
+    @media (prefers-color-scheme: dark) { .gap-ul { color: #aeaeb2; } }
+    .gap-ul li { display: flex; align-items: flex-start; gap: 10px; }
+    .gap-x     { color: #ef4444; font-weight: 700; flex-shrink: 0; }
+    .gap-check { color: #f97316; font-weight: 700; flex-shrink: 0; }
+
+    @media (max-width: 600px) {
+      #problem > div > div:last-child { grid-template-columns: 1fr; }
+    }
+  </style>
 
 
 
@@ -562,22 +589,162 @@
   <!-- ════════════════════════════════════
        FOOTER
   ════════════════════════════════════ -->
-  <footer class="footer-main">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="footer-grid">
-        <div class="footer-brand"><div class="preecode-logo logo-footer mb-3"><span class="brand-dark" style="font-size: 24px; font-weight: bold;">Pree</span><span class="brand-accent" style="font-size: 24px; font-weight: bold; color: #ff9500 !important;">code</span></div><p class="footer-desc">Developer activity analytics built into VS Code. Track sessions, measure growth, and prepare for placements.</p></div>
-        <nav class="footer-col"><p class="footer-heading">Product</p><ul class="footer-links"><li><a href="#testimonials">Testimonials</a></li><li><a href="#faq">FAQ</a></li></ul></nav>
-        <nav class="footer-col"><p class="footer-heading">Company</p><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="mailto:preecodeai@gmail.com">Contact</a></li></ul></nav>
-        <nav class="footer-col"><p class="footer-heading">Legal</p><ul class="footer-links"><li><a href="legal.html">Privacy & Terms</a></li></ul>
-          <div class="footer-social">
-            <a href="https://x.com/preecodeai" target="_blank" rel="noopener noreferrer" aria-label="Visit Preecode on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            <a href="mailto:preecodeai@gmail.com" aria-label="Send email to Preecode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg></a>
+  <footer class="site-footer">
+    <div class="max-w-6xl mx-auto px-8">
+
+      <!-- Top row -->
+      <div class="footer-top">
+        <!-- Brand + tagline -->
+        <div class="footer-brand-col">
+          <a href="/" class="footer-logo">
+            <span class="footer-logo-pree">Pree</span><span style="color:#f97316;">code</span>
+          </a>
+          <p class="footer-tagline-text">From first commit to first offer.</p>
+        </div>
+
+        <!-- Links -->
+        <div class="footer-links-row">
+          <div class="footer-link-group">
+            <p class="footer-group-label">Product</p>
+            <a href="#testimonials" class="footer-link">Testimonials</a>
+            <a href="#faq" class="footer-link">FAQ</a>
+          </div>
+          <div class="footer-link-group">
+            <p class="footer-group-label">Company</p>
+            <a href="about.html" class="footer-link">About</a>
+            <a href="mailto:preecodeai@gmail.com" class="footer-link">Contact</a>
+          </div>
+          <div class="footer-link-group">
+            <p class="footer-group-label">Legal</p>
+            <a href="legal.html" class="footer-link">Privacy &amp; Terms</a>
           </div>
         </div>
       </div>
-      <div class="footer-bottom"><p>&copy; 2026 <span class="brand-dark">Pree</span><span class="brand-accent" style="color: #F97316">code</span>. All rights reserved.</p><p class="footer-tagline">Built for developers.</p></div>
+
+      <!-- Divider -->
+      <div class="footer-divider"></div>
+
+      <!-- Bottom row -->
+      <div class="footer-bottom-row">
+        <p class="footer-copy">&copy; 2026 Preecode. All rights reserved.</p>
+        <div class="footer-socials">
+          <a href="https://x.com/preecodeai" target="_blank" rel="noopener noreferrer" aria-label="X" class="footer-social-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="mailto:preecodeai@gmail.com" aria-label="Email" class="footer-social-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+          </a>
+        </div>
+      </div>
+
     </div>
   </footer>
+
+  <style>
+    .site-footer {
+      padding: 64px 0 32px;
+      border-top: 1px solid rgba(0,0,0,0.07);
+      margin-top: 40px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .site-footer { border-top-color: rgba(255,255,255,0.07); }
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand-col { display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      text-decoration: none;
+    }
+    .footer-logo-pree { color: #1d1d1f; }
+    @media (prefers-color-scheme: dark) { .footer-logo-pree { color: #f5f5f7; } }
+
+    .footer-tagline-text {
+      font-size: 13px;
+      color: #aeaeb2;
+      margin: 0;
+      max-width: 200px;
+      line-height: 1.5;
+    }
+
+    .footer-links-row {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .footer-link-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-group-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #aeaeb2;
+      margin: 0 0 4px;
+    }
+
+    .footer-link {
+      font-size: 14px;
+      color: #6e6e73;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-link:hover { color: #1d1d1f; }
+    @media (prefers-color-scheme: dark) {
+      .footer-link { color: #636366; }
+      .footer-link:hover { color: #f5f5f7; }
+    }
+
+    .footer-divider {
+      height: 1px;
+      background: rgba(0,0,0,0.07);
+      margin-bottom: 24px;
+    }
+    @media (prefers-color-scheme: dark) { .footer-divider { background: rgba(255,255,255,0.07); } }
+
+    .footer-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: #aeaeb2;
+      margin: 0;
+    }
+
+    .footer-socials { display: flex; align-items: center; gap: 16px; }
+
+    .footer-social-link {
+      color: #aeaeb2;
+      text-decoration: none;
+      display: inline-flex;
+      transition: color 0.15s;
+    }
+    .footer-social-link:hover { color: #1d1d1f; }
+    @media (prefers-color-scheme: dark) {
+      .footer-social-link:hover { color: #f5f5f7; }
+    }
+  </style>
 
 
   <!-- ════════════════════════════════════
