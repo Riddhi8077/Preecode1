@@ -45,8 +45,8 @@
       <a href="#problem" class="nav-mobile-link">About</a>
       <a href="#testimonials" class="nav-mobile-link">Testimonials</a>
       <a href="#faq" class="nav-mobile-link">FAQ</a>
-      <a href="login.html" class="nav-signin" style="text-align:center;">Sign in</a>
-      <a href="register.html" class="nav-cta" style="text-align:center;">Get started</a>
+      <a href="login.html" class="nav-signin" style="text-align:center;display:block;">Sign in</a>
+      <a href="register.html" class="nav-cta" style="text-align:center;display:block;">Get started</a>
     </div>
   </nav>
 
@@ -71,7 +71,7 @@
     .nav-mobile-btn { background:none; border:none; cursor:pointer; color:#6e6e73; padding:4px; }
     @media (prefers-color-scheme: dark) { .nav-mobile-btn { color:#86868b; } }
 
-    .nav-mobile-menu { padding:16px 24px 20px; display:flex; flex-direction:column; gap:16px; background:rgba(255,255,255,0.95); backdrop-filter:blur(20px); border-top:1px solid rgba(0,0,0,0.06); }
+    .nav-mobile-menu { padding:16px 24px 20px; flex-direction:column; gap:16px; background:rgba(255,255,255,0.95); backdrop-filter:blur(20px); border-top:1px solid rgba(0,0,0,0.06); }
     @media (prefers-color-scheme: dark) { .nav-mobile-menu { background:rgba(0,0,0,0.92); border-top:1px solid rgba(255,255,255,0.07); } }
     .nav-mobile-link { font-size:15px; font-weight:500; color:#6e6e73; text-decoration:none; }
     @media (prefers-color-scheme: dark) { .nav-mobile-link { color:#86868b; } }
@@ -658,7 +658,12 @@
 
     var menuBtn = document.getElementById('mobile-menu-btn');
     var mobileMenu = document.getElementById('mobile-menu');
-    if (menuBtn && mobileMenu) { menuBtn.addEventListener('click', function () { mobileMenu.classList.toggle('hidden'); }); }
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', function () {
+        var isHidden = mobileMenu.style.display === 'none' || mobileMenu.style.display === '';
+        mobileMenu.style.display = isHidden ? 'flex' : 'none';
+      });
+    }
 
     var revealElements = document.querySelectorAll('.reveal');
     var revealObserver = new IntersectionObserver(function (entries) {
