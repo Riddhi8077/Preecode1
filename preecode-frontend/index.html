@@ -19,141 +19,31 @@
   <!-- ════════════════════════════════════
        NAVBAR
   ════════════════════════════════════ -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-    <div class="max-w-6xl mx-auto px-8 py-5 flex items-center justify-between">
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-th-bg/80 border-b border-bdr">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+      <a href="/" class="brand-logo logo-nav"><span class="brand-dark">Pree</span><span class="brand-accent" style="color: #F97316">code</span></a>
 
-      <!-- Logo -->
-      <a href="/" style="text-decoration:none;display:inline-flex;align-items:center;">
-        <span style="font-size:19px;font-weight:700;letter-spacing:-0.4px;">
-          <span class="nav-logo-pree">Pree</span><span style="color:#f97316;">code</span>
-        </span>
-      </a>
-
-      <!-- Links -->
-      <div class="hidden md:flex items-center gap-10">
-        <a href="#problem" class="nav-link">About</a>
-        <a href="#testimonials" class="nav-link">Testimonials</a>
-        <a href="#faq" class="nav-link">FAQ</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#problem" class="text-sm text-txt-sec hover:text-txt transition-colors no-underline">About</a>
+        <a href="#testimonials" class="text-sm text-txt-sec hover:text-txt transition-colors no-underline">Testimonials</a>
+        <a href="#faq" class="text-sm text-txt-sec hover:text-txt transition-colors no-underline">FAQ</a>
+        <a href="login.html" class="btn btn-primary btn-sm">Login</a>
       </div>
 
-      <!-- CTA -->
-      <div class="hidden md:flex items-center gap-3">
-        <a href="login.html" class="nav-signin">Sign in</a>
-        <a href="register.html" class="nav-cta">Get started</a>
-      </div>
-
-      <!-- Mobile toggle -->
-      <button id="mobile-menu-btn" class="md:hidden nav-mobile-btn" aria-label="Menu">
-        <svg id="menu-icon" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+      <button id="mobile-menu-btn" class="md:hidden text-txt-sec hover:text-txt bg-transparent border-none cursor-pointer">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5"/>
         </svg>
       </button>
     </div>
 
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden nav-mobile-menu">
-      <a href="#problem" class="nav-mobile-link">About</a>
-      <a href="#testimonials" class="nav-mobile-link">Testimonials</a>
-      <a href="#faq" class="nav-mobile-link">FAQ</a>
-      <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px;">
-        <a href="login.html" class="nav-signin" style="text-align:center;">Sign in</a>
-        <a href="register.html" class="nav-cta" style="text-align:center;">Get started</a>
-      </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-bdr px-6 py-4 space-y-3 bg-th-bg/95 backdrop-blur-xl">
+      <a href="#problem" class="block text-sm text-txt-sec hover:text-txt no-underline">About</a>
+      <a href="#testimonials" class="block text-sm text-txt-sec hover:text-txt no-underline">Testimonials</a>
+      <a href="#faq" class="block text-sm text-txt-sec hover:text-txt no-underline">FAQ</a>
+      <a href="login.html" class="btn btn-primary btn-sm block w-full text-center">Login</a>
     </div>
   </nav>
-
-  <style>
-    .nav-logo-pree { color: #1d1d1f; }
-    @media (prefers-color-scheme: dark) { .nav-logo-pree { color: #f5f5f7; } }
-
-    .nav-link {
-      font-size: 14px;
-      font-weight: 450;
-      color: #6e6e73;
-      text-decoration: none;
-      transition: color 0.15s;
-      letter-spacing: -0.1px;
-    }
-    .nav-link:hover { color: #1d1d1f; }
-    @media (prefers-color-scheme: dark) {
-      .nav-link { color: #86868b; }
-      .nav-link:hover { color: #f5f5f7; }
-    }
-
-    .nav-signin {
-      font-size: 14px;
-      font-weight: 500;
-      color: #6e6e73;
-      text-decoration: none;
-      padding: 7px 14px;
-      border-radius: 8px;
-      transition: color 0.15s;
-    }
-    .nav-signin:hover { color: #1d1d1f; }
-    @media (prefers-color-scheme: dark) {
-      .nav-signin { color: #86868b; }
-      .nav-signin:hover { color: #f5f5f7; }
-    }
-
-    .nav-cta {
-      font-size: 14px;
-      font-weight: 600;
-      color: #fff;
-      background: #f97316;
-      text-decoration: none;
-      padding: 8px 18px;
-      border-radius: 8px;
-      transition: opacity 0.15s;
-    }
-    .nav-cta:hover { opacity: 0.85; }
-
-    /* Scrolled state */
-    #navbar.scrolled {
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-    }
-    @media (prefers-color-scheme: dark) {
-      #navbar.scrolled {
-        background: rgba(0,0,0,0.8);
-        border-bottom: 1px solid rgba(255,255,255,0.07);
-      }
-    }
-
-    /* Mobile */
-    .nav-mobile-btn {
-      background: none; border: none; cursor: pointer;
-      color: #6e6e73; padding: 4px;
-    }
-    @media (prefers-color-scheme: dark) { .nav-mobile-btn { color: #86868b; } }
-
-    .nav-mobile-menu {
-      padding: 16px 24px 20px;
-      display: flex; flex-direction: column; gap: 16px;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(0,0,0,0.06);
-    }
-    @media (prefers-color-scheme: dark) {
-      .nav-mobile-menu {
-        background: rgba(0,0,0,0.92);
-        border-top: 1px solid rgba(255,255,255,0.07);
-      }
-    }
-    .nav-mobile-link {
-      font-size: 15px; font-weight: 500;
-      color: #6e6e73; text-decoration: none;
-    }
-    @media (prefers-color-scheme: dark) { .nav-mobile-link { color: #86868b; } }
-  </style>
-
-  <script>
-    // Scroll effect
-    window.addEventListener('scroll', function () {
-      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
-    });
-  </script>
 
 
   <!-- ════════════════════════════════════
