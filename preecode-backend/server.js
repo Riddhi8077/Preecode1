@@ -24,6 +24,7 @@ process.on('unhandledRejection', (err) => {
 
 console.log('[startup] Loading dependencies...');
 
+const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -182,6 +183,36 @@ console.log('[startup] Routes registered\n');
 
 // =============== SERVER START ===============
 
+function listenOnAvailablePort(preferredPort, options = {}) {
+  const {
+    maxAttempts = 10,
+    allowFallback = false,
+  } = options;
+
+  return new Promise((resolve, reject) => {
+    let attempts = 0;
+    let activeServer;
+
+    const tryListen = (port) => {
+      attempts += 1;
+      activeServer = http.createServer(app);
+
+      activeServer.once('error', (error) => {
+        if (error.code === 'EADDRINUSE' && allowFallback && attempts < maxAttempts) {
+          console.warn(`[startup] Port ${port} is already in use, trying ${port + 1}...`);
+          return tryListen(port + 1);
+        }
+        reject(error);
+      });
+
+      activeServer.once('listening', () => resolve({ server: activeServer, port }));
+      activeServer.listen(port);
+    };
+
+    tryListen(preferredPort);
+  });
+}
+
 const startServer = async () => {
   try {
     console.log(`\n${'='.repeat(60)}`);
@@ -195,28 +226,30 @@ const startServer = async () => {
     }
 
     const NODE_ENV = process.env.NODE_ENV || 'development';
-    const PORT = process.env.PORT || 5001;
 
     console.log('[startup] Connecting to MongoDB...');
     await connectDB();
     console.log('[startup] ✅ MongoDB connected\n');
 
-    console.log('[startup] Starting Express server...');
-    const server = app.listen(PORT, () => {
-      console.log('\n✅ SERVER STARTED SUCCESSFULLY');
-      console.log(`${'='.repeat(60)}`);
-      console.log(`📍 Environment: ${NODE_ENV}`);
-      console.log(`🔌 Port: ${PORT}`);
-      console.log(`🌐 Frontend: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
-      console.log(`⚙️  Backend: ${process.env.BACKEND_URL || 'http://localhost:5001'}`);
-      console.log(`${'='.repeat(60)}`);
-      console.log(`📡 API: http://localhost:${PORT}/api`);
-      console.log(`🏥 Health: GET http://localhost:${PORT}/api/health`);
-      console.log(`🔐 Auth: GET http://localhost:${PORT}/api/auth/google`);
-      console.log(`${'='.repeat(60)}\n`);
+    const preferredPort = Number(process.env.PORT) || 5001;
+    const allowFallback = process.env.NODE_ENV !== 'production';
+
+    const { server, port } = await listenOnAvailablePort(preferredPort, {
+      allowFallback,
     });
 
-    // Handle unhandled rejections around server
+    console.log('\n✅ SERVER STARTED SUCCESSFULLY');
+    console.log(`${'='.repeat(60)}`);
+    console.log(`📍 Environment: ${NODE_ENV}`);
+    console.log(`🔌 Port: ${port}`);
+    console.log(`🌐 Frontend: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
+    console.log(`⚙️  Backend: ${process.env.BACKEND_URL || `http://localhost:${port}`}`);
+    console.log(`${'='.repeat(60)}`);
+    console.log(`📡 API: http://localhost:${port}/api`);
+    console.log(`🏥 Health: GET http://localhost:${port}/api/health`);
+    console.log(`🔐 Auth: GET http://localhost:${port}/api/auth/google`);
+    console.log(`${'='.repeat(60)}\n`);
+
     server.on('error', (err) => {
       console.error('\n❌ Server error:', err.message);
       process.exit(1);
