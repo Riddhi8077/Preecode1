@@ -1,4 +1,4 @@
-const { chat, getHint, reviewCode, generateQuestion } = require('../services/aiService');
+const { chat, getHint, reviewCode, generateQuestion, reviewProject } = require('../services/aiService');
 
 // POST /api/ai/generate-question
 exports.generatePracticeQuestion = async (req, res, next) => {
@@ -51,6 +51,27 @@ exports.reviewUserCode = async (req, res, next) => {
     }
     const review = await reviewCode(code, language, problemDescription);
     res.json({ review });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// POST /api/ai/project-review
+exports.reviewProjectCode = async (req, res, next) => {
+  try {
+    const { files, projectInfo, analysisLevel } = req.body;
+    if (!files || !Array.isArray(files) || files.length === 0) {
+      return res.status(400).json({ message: 'files array is required and must not be empty.' });
+    }
+
+    const validatedFiles = files.map(f => ({
+      path: String(f.path || 'unknown').slice(0, 500),
+      content: String(f.content || '').slice(0, 50000),
+      language: String(f.language || 'text').slice(0, 50),
+    }));
+
+    const review = await reviewProject(validatedFiles, projectInfo, analysisLevel);
+    res.json(review);
   } catch (error) {
     next(error);
   }

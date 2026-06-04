@@ -472,4 +472,78 @@ Return ONLY valid JSON (no markdown):
   }
 }
 
-module.exports = { call_openrouter, generateResponse, chat, getHint, reviewCode, generateQuestion, verifyCodeOutput };
+async function reviewProject(files, projectInfo = {}, analysisLevel = 'quick') {
+  if (!Array.isArray(files) || files.length === 0) {
+    throw new Error('Files array is required and must not be empty.');
+  }
+
+  const fileCount = Math.min(files.length, analysisLevel === 'deep' ? files.length : 2);
+  const selectedFiles = files.slice(0, fileCount);
+
+  const fileDetails = selectedFiles
+    .map(f => `## File: ${f.path}\nLanguage: ${f.language}\n\`\`\`${f.language}\n${f.content}\n\`\`\``)
+    .join('\n\n');
+
+  const projectContext = [
+    projectInfo.name ? `Project: ${projectInfo.name}` : '',
+    projectInfo.frameworks?.length ? `Frameworks: ${projectInfo.frameworks.join(', ')}` : '',
+    projectInfo.languages?.length ? `Languages: ${projectInfo.languages.join(', ')}` : '',
+    projectInfo.totalFiles ? `Total Files: ${projectInfo.totalFiles}` : '',
+  ].filter(Boolean).join('\n');
+
+  const prompt = `You are a comprehensive code reviewer. Analyze this project code and provide a detailed review.
+
+${projectContext}
+
+${fileDetails}
+
+Provide a structured JSON response (no markdown):
+{
+  "projectSummary": {
+    "overallScore": <number 1-100>,
+    "riskLevel": "low" | "medium" | "high",
+    "mainFindings": ["finding 1", "finding 2", "finding 3"]
+  },
+  "findings": [
+    {
+      "category": "bugs" | "security" | "performance" | "architecture" | "quality" | "maintainability",
+      "severity": "critical" | "high" | "medium" | "low",
+      "title": "issue title",
+      "description": "detailed description",
+      "affectedFiles": ["file1.js"],
+      "suggestedFix": "how to fix",
+      "improvedCode": "optional: fixed code snippet"
+    }
+  ],
+  "bestPractices": {
+    "observed": ["practice 1", "practice 2"],
+    "recommendations": ["recommendation 1", "recommendation 2"],
+    "frameworkSpecific": ["framework advice"]
+  },
+  "performanceInsights": {
+    "potentialBottlenecks": ["bottleneck 1"],
+    "optimization": "general optimization advice"
+  }
+}`;
+
+  try {
+    const raw = await generateResponse([{ role: 'user', content: prompt }], { temperature: 0.3, maxTokens: 2000 });
+    const cleaned = raw.replace(/```[a-z]*\n?/gi, '').replace(/```/g, '').trim();
+    const result = JSON.parse(cleaned);
+
+    return {
+      projectSummary: result.projectSummary || {},
+      findings: result.findings || [],
+      bestPractices: result.bestPractices || {},
+      performanceInsights: result.performanceInsights || {},
+      filesAnalyzed: selectedFiles.length,
+      totalFiles: projectInfo.totalFiles || files.length,
+      generatedAt: new Date().toISOString(),
+    };
+  } catch (err) {
+    console.error('[ai/project-review] error:', err.message);
+    throw new Error(`Failed to analyze project: ${err.message}`);
+  }
+}
+
+module.exports = { call_openrouter, generateResponse, chat, getHint, reviewCode, generateQuestion, verifyCodeOutput, reviewProject };

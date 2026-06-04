@@ -2,13 +2,15 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { AuthManager } from './auth/authManager';
-import { generateQuestionFromBackend, sendAIChatMessage, sendPracticeData, sendSubmission } from './services/apiService';
+import { generateQuestionFromBackend, sendAIChatMessage, sendPracticeData, sendSubmission, sendProjectReviewRequest } from './services/apiService';
 import { BackendSyncService } from './services/backendSyncService';
 import { preecodeStore } from './state/store';
 import { RunDetectionService } from './timer/runDetectionService';
 import { PracticeTimerService } from './timer/practiceTimerService';
 import { ControlCenterViewProvider } from './views/controlCenterView';
 import { OnboardingService } from './onboarding/onboardingService';
+import * as projectReviewService from './services/projectReviewService';
+import { ProjectReviewPanel } from './panels/projectReviewPanel';
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env')
@@ -2979,6 +2981,78 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     }),
     vscode.commands.registerCommand('preecode.reviewCode', async () => {
       await runQuickAction('review');
+    }),
+    vscode.commands.registerCommand('preecode.reviewProject', async () => {
+      try {
+        const source = await projectReviewService.askReviewSource();
+        if (!source) return;
+
+        let files: projectReviewService.ProjectFile[] = [];
+        let projectInfo: projectReviewService.ProjectInfo | undefined;
+        let folderPath: string | undefined;
+
+        if (source === 'workspace') {
+          const workspaceFolders = vscode.workspace.workspaceFolders;
+          if (!workspaceFolders || workspaceFolders.length === 0) {
+            vscode.window.showErrorMessage('No workspace open. Open a folder first.');
+            return;
+          }
+          folderPath = workspaceFolders[0].uri.fsPath;
+        } else if (source === 'folder') {
+          const folders = await projectReviewService.selectProjectFolder();
+          if (!folders || folders.length === 0) return;
+          folderPath = folders[0].fsPath;
+        } else if (source === 'files') {
+          const fileUris = await projectReviewService.selectMultipleFiles();
+          if (!fileUris || fileUris.length === 0) return;
+          files = await projectReviewService.getFilesFromSelection(fileUris);
+        }
+
+        if (folderPath) {
+          files = await projectReviewService.getFilesFromFolder(vscode.Uri.file(folderPath));
+          projectInfo = await projectReviewService.detectProjectInfo(folderPath);
+        }
+
+        if (files.length === 0) {
+          vscode.window.showErrorMessage('No files found to review.');
+          return;
+        }
+
+        const analysisLevel = await projectReviewService.askAnalysisLevel();
+        if (!analysisLevel) return;
+
+        const filteredFiles = await projectReviewService.filterFilesForReview(files, analysisLevel);
+
+        if (filteredFiles.length === 0) {
+          vscode.window.showErrorMessage('No files to analyze after filtering.');
+          return;
+        }
+
+        await vscode.window.withProgress(
+          {
+            location: vscode.ProgressLocation.Notification,
+            title: 'Analyzing project...',
+            cancellable: false
+          },
+          async () => {
+            try {
+              const reviewResult = await sendProjectReviewRequest(context, {
+                files: filteredFiles,
+                projectInfo,
+                analysisLevel
+              });
+
+              ProjectReviewPanel.render(context, context.extensionUri, reviewResult);
+              vscode.window.showInformationMessage('Project review completed!');
+            } catch (err: any) {
+              const msg = String(err?.message || 'Unknown error');
+              vscode.window.showErrorMessage(`Project review failed: ${msg}`);
+            }
+          }
+        );
+      } catch (err: any) {
+        vscode.window.showErrorMessage(`Project review error: ${err?.message || 'Unknown error'}`);
+      }
     }),
     vscode.commands.registerCommand('preecode.openControlCenter', async () => {
       await vscode.commands.executeCommand('workbench.view.extension.preecode');

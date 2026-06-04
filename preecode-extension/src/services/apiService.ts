@@ -450,3 +450,74 @@ export async function generateQuestionFromBackend(
         throw new Error(msg || 'Could not reach question generation service.');
     }
 }
+
+export interface ProjectReviewFile {
+    path: string;
+    content: string;
+    language: string;
+}
+
+export interface ProjectReviewRequest {
+    files: ProjectReviewFile[];
+    projectInfo?: {
+        name: string;
+        frameworks: string[];
+        languages: string[];
+        totalFiles: number;
+    };
+    analysisLevel: 'quick' | 'deep';
+}
+
+export async function sendProjectReviewRequest(
+    context: vscode.ExtensionContext,
+    request: ProjectReviewRequest
+): Promise<any> {
+    const token = await getToken(context);
+    if (!token) {
+        throw new Error('Please login to Preecode to use project review.');
+    }
+
+    if (!request.files || request.files.length === 0) {
+        throw new Error('No files selected for review.');
+    }
+
+    try {
+        console.log('[Preecode] Calling backend API: /api/ai/project-review');
+        const response = await doFetchWithTimeout(`${API_BASE}/ai/project-review`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                files: request.files,
+                projectInfo: request.projectInfo,
+                analysisLevel: request.analysisLevel
+            })
+        }, 60000); // 60 second timeout for project review
+
+        if (response.status === 401) {
+            await deleteToken(context);
+            throw new Error('Session expired. Please login again.');
+        }
+
+        if (response.status === 429) {
+            throw new Error('Too many requests. Please wait a moment and try again.');
+        }
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Project review failed (${response.status}).`);
+        }
+
+        const payload: any = await response.json();
+        console.log('[Preecode] Backend response received: /api/ai/project-review');
+        return payload;
+    } catch (error: any) {
+        const msg = String(error?.message || '');
+        if (msg.includes('waking up') || msg.includes('AbortError') || msg.includes('abort')) {
+            throw new Error('Preecode server is starting up. Please wait a moment and try again.');
+        }
+        throw new Error(msg || 'Could not reach project review service.');
+    }
+}
