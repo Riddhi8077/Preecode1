@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preecode — Developer Activity Analytics for VS Code</title>
+  <meta name="description" content="Practice coding in VS Code. Ace interviews with AI coaching. One platform, one profile, zero switching.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="premium-hero.css">
+</head>
+
+<body>
+  <!-- Theme toggle (optional, top-right) -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+    <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path class="sun" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+      <path class="moon" style="display:none;" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+    </svg>
+  </button>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <!-- Background: Grid + Radial Glow -->
+    <div class="hero__background">
+      <div class="hero__grid"></div>
+      <div class="hero__glow"></div>
+    </div>
+
+    <!-- Hero Content Container -->
+    <div class="hero__container">
+      <!-- Top Badge -->
+      <div class="hero__badge">
+        <span class="badge__dot"></span>
+        <span class="badge__text">CODE · INTERVIEW · GET HIRED</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="hero__headline">
+        From first commit<br />
+        to <span class="highlight">first offer.</span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="hero__subheadline">
+        Practice coding in VS Code. Ace interviews with AI coaching. One platform, one profile, zero switching.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="hero__ctas">
+        <button class="btn btn--primary">Start Practicing</button>
+        <button class="btn btn--secondary">View Roadmap</button>
+      </div>
+
+      <!-- Pipeline Strip -->
+      <div class="pipeline">
+        <!-- Card 1: Practice -->
+        <div class="pipeline__card">
+          <div class="card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <div class="card__content">
+            <h3 class="card__label">Practice</h3>
+            <p class="card__subtitle">AI problems in VS Code</p>
+          </div>
+        </div>
+
+        <!-- Arrow 1 -->
+        <div class="pipeline__arrow">
+          <svg viewBox="0 0 40 2" fill="none" stroke="currentColor" stroke-width="1">
+            <line x1="0" y1="1" x2="30" y2="1"></line>
+            <polygon points="35,1 28,0 28,2"></polygon>
+          </svg>
+        </div>
+
+        <!-- Card 2: Interview -->
+        <div class="pipeline__card">
+          <div class="card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <!-- Person silhouette -->
+              <circle cx="12" cy="6" r="3"></circle>
+              <path d="M12 9c-3 0-5 2-5 5v5h10v-5c0-3-2-5-5-5z"></path>
+              <!-- Green check badge -->
+              <circle cx="18" cy="15" r="4" fill="none" stroke="#10b981" stroke-width="1.5"></circle>
+              <path d="M17 15.5l1 1 2-2" stroke="#10b981" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div class="card__content">
+            <h3 class="card__label">Interview</h3>
+            <p class="card__subtitle">AI mock + behavioral</p>
+          </div>
+        </div>
+
+        <!-- Arrow 2 -->
+        <div class="pipeline__arrow">
+          <svg viewBox="0 0 40 2" fill="none" stroke="currentColor" stroke-width="1">
+            <line x1="0" y1="1" x2="30" y2="1"></line>
+            <polygon points="35,1 28,0 28,2"></polygon>
+          </svg>
+        </div>
+
+        <!-- Card 3: Get Hired -->
+        <div class="pipeline__card">
+          <div class="card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <!-- Rectangle (briefcase/document) -->
+              <rect x="3" y="8" width="18" height="12" rx="2"></rect>
+              <path d="M7 8V6a2 2 0 012-2h6a2 2 0 012 2v2"></path>
+              <!-- Green check badge -->
+              <circle cx="17" cy="11" r="4" fill="none" stroke="#10b981" stroke-width="1.5"></circle>
+              <path d="M16 11.5l1 1 2-2" stroke="#10b981" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div class="card__content">
+            <h3 class="card__label">Get Hired</h3>
+            <p class="card__subtitle">Resume + placement</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="hero__stats">
+        <div class="stat">
+          <div class="stat__number">2,500+</div>
+          <div class="stat__label">Students</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">10+</div>
+          <div class="stat__label">Languages</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">AI-scored</div>
+          <div class="stat__label">Interviews</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">Free</div>
+          <div class="stat__label">Early Access</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="premium-hero.js"></script>
+</body>
+</html>

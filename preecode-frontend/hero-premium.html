@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preecode — From First Commit to First Offer</title>
+  <meta name="description" content="Practice coding in VS Code. Ace interviews with AI coaching. One platform, one profile, zero switching.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ════════════════════════════════════════════════════════
+       THEME VARIABLES
+       ════════════════════════════════════════════════════════ */
+
+    :root {
+      color-scheme: dark light;
+      --bg-primary: #0e0c0a;
+      --bg-surface: #1a1714;
+      --text-primary: #f5f0e8;
+      --text-secondary: #7a7268;
+      --accent: #ea6c1c;
+      --border: #2a2620;
+      --grid-color: rgba(234, 108, 28, 0.08);
+      --glow-color: rgba(234, 108, 28, 0.15);
+      --success: #10b981;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-primary: #faf8f5;
+        --bg-surface: #f2ede6;
+        --text-primary: #1a1714;
+        --text-secondary: #8b7d72;
+        --accent: #ea6c1c;
+        --border: #e3d9cc;
+        --grid-color: rgba(234, 108, 28, 0.05);
+        --glow-color: rgba(234, 108, 28, 0.08);
+      }
+    }
+
+    html.light {
+      color-scheme: light;
+      --bg-primary: #faf8f5;
+      --bg-surface: #f2ede6;
+      --text-primary: #1a1714;
+      --text-secondary: #8b7d72;
+      --accent: #ea6c1c;
+      --border: #e3d9cc;
+      --grid-color: rgba(234, 108, 28, 0.05);
+      --glow-color: rgba(234, 108, 28, 0.08);
+    }
+
+    html.dark {
+      color-scheme: dark;
+      --bg-primary: #0e0c0a;
+      --bg-surface: #1a1714;
+      --text-primary: #f5f0e8;
+      --text-secondary: #7a7268;
+      --accent: #ea6c1c;
+      --border: #2a2620;
+      --grid-color: rgba(234, 108, 28, 0.08);
+      --glow-color: rgba(234, 108, 28, 0.15);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESET & BASE
+       ════════════════════════════════════════════════════════ */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       THEME TOGGLE
+       ════════════════════════════════════════════════════════ */
+
+    .theme-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       HERO SECTION
+       ════════════════════════════════════════════════════════ */
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px 80px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.5;
+      z-index: 1;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle at center, var(--glow-color) 0%, transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* ────────────────────────────────────────────────────────
+       BADGE
+       ──────────────────────────────────────────────────────── */
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background-color: rgba(234, 108, 28, 0.08);
+      margin-bottom: 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .badge-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ────────────────────────────────────────────────────────
+       HEADLINE
+       ──────────────────────────────────────────────────────── */
+
+    .headline {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .headline-accent {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ────────────────────────────────────────────────────────
+       SUBHEADLINE
+       ──────────────────────────────────────────────────────── */
+
+    .subheadline {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+
+    /* ────────────────────────────────────────────────────────
+       CTA BUTTONS
+       ──────────────────────────────────────────────────────── */
+
+    .ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 32px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: var(--bg-primary);
+      box-shadow: 0 4px 16px rgba(234, 108, 28, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(234, 108, 28, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-surface);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ────────────────────────────────────────────────────────
+       PIPELINE
+       ──────────────────────────────────────────────────────── */
+
+    .pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .pipeline-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-surface);
+      min-width: 160px;
+      transition: all 0.25s ease;
+    }
+
+    .pipeline-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pipeline-card:hover {
+        transform: none;
+      }
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .pipeline-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      width: 40px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .pipeline-arrow svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ────────────────────────────────────────────────────────
+       STATS
+       ──────────────────────────────────────────────────────── */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 40px;
+      margin-top: 80px;
+      padding-top: 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE
+       ════════════════════════════════════════════════════════ */
+
+    @media (max-width: 768px) {
+      .pipeline {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .pipeline-arrow {
+        transform: rotate(90deg);
+        height: 40px;
+        width: 20px;
+      }
+
+      .pipeline-card {
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        margin-top: 60px;
+        padding-top: 40px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 40px 16px 60px;
+      }
+
+      .headline {
+        margin-bottom: 16px;
+      }
+
+      .ctas {
+        gap: 12px;
+        margin-bottom: 48px;
+      }
+
+      .btn {
+        padding: 11px 24px;
+        font-size: 14px;
+      }
+
+      .badge {
+        font-size: 10px;
+        padding: 6px 12px;
+        margin-bottom: 24px;
+      }
+
+      .theme-toggle {
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .subheadline {
+        font-size: 15px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .stat-number {
+        font-size: 24px;
+      }
+
+      .stat-label {
+        font-size: 11px;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       ACCESSIBILITY
+       ════════════════════════════════════════════════════════ */
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .badge-dot {
+        animation: none;
+      }
+    }
+
+    .btn:focus-visible,
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+    <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle class="sun" cx="12" cy="12" r="5"></circle>
+      <line class="sun" x1="12" y1="1" x2="12" y2="3"></line>
+      <line class="sun" x1="12" y1="21" x2="12" y2="23"></line>
+      <line class="sun" x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line class="sun" x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line class="sun" x1="1" y1="12" x2="3" y2="12"></line>
+      <line class="sun" x1="21" y1="12" x2="23" y2="12"></line>
+      <line class="sun" x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line class="sun" x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      <path class="moon" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" style="display:none;"></path>
+    </svg>
+  </button>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span>CODE · INTERVIEW · GET HIRED</span>
+      </div>
+
+      <h1 class="headline">From first commit<br />to <span class="headline-accent">first offer.</span></h1>
+
+      <p class="subheadline">Practice coding in VS Code. Ace interviews with AI coaching. One platform, one profile, zero switching.</p>
+
+      <div class="ctas">
+        <button class="btn btn-primary">Start Practicing</button>
+        <button class="btn btn-secondary">View Roadmap</button>
+      </div>
+
+      <div class="pipeline">
+        <div class="pipeline-card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <h3 class="card-label">Practice</h3>
+          <p class="card-subtitle">AI problems in VS Code</p>
+        </div>
+
+        <div class="pipeline-arrow">
+          <svg viewBox="0 0 40 2" fill="none">
+            <line x1="0" y1="1" x2="30" y2="1"></line>
+            <polygon points="35,1 28,0 28,2"></polygon>
+          </svg>
+        </div>
+
+        <div class="pipeline-card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="6" r="3"></circle>
+              <path d="M12 9c-3 0-5 2-5 5v5h10v-5c0-3-2-5-5-5z"></path>
+              <circle cx="18" cy="15" r="4" fill="none"></circle>
+              <path d="M17 15.5l1 1 2-2" stroke="currentColor" stroke-width="1.5" fill="none"></path>
+            </svg>
+          </div>
+          <h3 class="card-label">Interview</h3>
+          <p class="card-subtitle">AI mock + behavioral</p>
+        </div>
+
+        <div class="pipeline-arrow">
+          <svg viewBox="0 0 40 2" fill="none">
+            <line x1="0" y1="1" x2="30" y2="1"></line>
+            <polygon points="35,1 28,0 28,2"></polygon>
+          </svg>
+        </div>
+
+        <div class="pipeline-card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="8" width="18" height="12" rx="2"></rect>
+              <path d="M7 8V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"></path>
+              <circle cx="17" cy="11" r="4" fill="none"></circle>
+              <path d="M16 11.5l1 1 2-2" stroke="currentColor" stroke-width="1.5" fill="none"></path>
+            </svg>
+          </div>
+          <h3 class="card-label">Get hired</h3>
+          <p class="card-subtitle">Resume + placement</p>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number">2,500+</div>
+          <div class="stat-label">Students</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">10+</div>
+          <div class="stat-label">Languages</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">AI-scored</div>
+          <div class="stat-label">Interviews</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">Free</div>
+          <div class="stat-label">Early Access</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    function initializeTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      setTheme(theme);
+    }
+
+    function setTheme(theme) {
+      if (theme === 'light') {
+        html.classList.remove('dark');
+        html.classList.add('light');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    function toggleTheme() {
+      const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    themeToggle?.addEventListener('click', toggleTheme);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', initializeTheme);
+  </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Preecode – Practice Here</title>
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="/mobile-enhancements.js" defer></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg-primary, #0d1117); color: var(--text-primary, #e6edf3); font-family: 'Inter', system-ui, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* ── Topbar ── */
+    .ph-topbar { display: flex; align-items: center; gap: 12px; padding: 10px 20px; background: var(--bg-secondary, #151c2c); border-bottom: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); flex-shrink: 0; }
+    .ph-topbar__back { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--bg-tertiary, #1e2736); border: 1px solid var(--border-subtle, rgba(255,255,255,0.1)); color: var(--text-primary, #e6edf3); text-decoration: none; transition: all 0.18s; }
+    .ph-topbar__back:hover { background: var(--bg-hover, rgba(255,255,255,0.08)); transform: translateX(-2px); }
+    .ph-topbar__back svg { width: 16px; height: 16px; }
+    .ph-topbar__logo { font-weight: 800; font-size: 16px; color: var(--text-primary, #e6edf3); text-decoration: none; }
+    .ph-topbar__logo span { color: #f97316; }
+    .ph-topbar__sep { width: 1px; height: 20px; background: var(--border-subtle, rgba(255,255,255,0.1)); }
+    .ph-topbar__title { font-size: 13px; font-weight: 600; color: var(--text-muted, #6b7280); }
+    .ph-topbar__spacer { flex: 1; }
+    .ph-topbar__lang select { background: var(--bg-tertiary, #1e2736); border: 1px solid var(--border-subtle, rgba(255,255,255,0.1)); color: var(--text-primary, #e6edf3); border-radius: 8px; padding: 6px 10px; font-size: 13px; cursor: pointer; }
+    .ph-topbar__diff select { background: var(--bg-tertiary, #1e2736); border: 1px solid var(--border-subtle, rgba(255,255,255,0.1)); color: var(--text-primary, #e6edf3); border-radius: 8px; padding: 6px 10px; font-size: 13px; cursor: pointer; }
+    .ph-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.18s; }
+    .ph-btn--gen { background: var(--bg-tertiary, #1e2736); color: var(--text-primary, #e6edf3); border: 1px solid var(--border-subtle, rgba(255,255,255,0.1)); }
+    .ph-btn--gen:hover { background: var(--bg-hover, rgba(255,255,255,0.08)); }
+    .ph-btn--run { background: #22c55e; color: #fff; }
+    .ph-btn--run:hover { background: #16a34a; }
+    .ph-btn--run:disabled { background: #374151; color: #6b7280; cursor: not-allowed; }
+    .ph-btn--save { background: var(--accent, #f97316); color: #fff; }
+    .ph-btn--save:hover { background: #ea580c; }
+    .ph-btn--hint { background: var(--bg-tertiary, #1e2736); color: #a78bfa; border: 1px solid rgba(167,139,250,0.2); }
+    .ph-btn--hint:hover { background: rgba(167,139,250,0.08); }
+    .ph-btn--solution { background: var(--bg-tertiary, #1e2736); color: #6b7280; border: 1px solid rgba(107,114,128,0.2); }
+    .ph-btn--solution:hover:not(:disabled) { background: rgba(248,113,113,0.08); color: #f87171; border-color: rgba(248,113,113,0.3); }
+    .ph-btn--solution:disabled { opacity: 0.4; cursor: not-allowed; }
+    .ph-timer { font-size: 13px; font-weight: 700; color: var(--text-muted, #6b7280); font-variant-numeric: tabular-nums; background: var(--bg-tertiary, #1e2736); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); }
+
+    /* ── Main layout ── */
+    .ph-main { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── Left panel: problem ── */
+    .ph-problem { width: 380px; flex-shrink: 0; display: flex; flex-direction: column; border-right: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); overflow: hidden; }
+    .ph-problem__header { padding: 16px 20px 12px; border-bottom: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); }
+    .ph-problem__badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .ph-problem__badge--easy { background: rgba(34,197,94,0.12); color: #22c55e; }
+    .ph-problem__badge--medium { background: rgba(234,179,8,0.12); color: #eab308; }
+    .ph-problem__badge--hard { background: rgba(239,68,68,0.12); color: #ef4444; }
+    .ph-problem__company { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 6px; background: rgba(59,130,246,0.12); color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+    .ph-problem__company svg { width: 10px; height: 10px; }
+    .ph-problem__title { font-size: 16px; font-weight: 700; color: var(--text-primary, #e6edf3); margin-bottom: 4px; }
+    .ph-problem__body { flex: 1; overflow-y: auto; padding: 16px 20px; font-size: 13.5px; line-height: 1.7; color: var(--text-secondary, #8b949e); }
+    .ph-problem__body p { margin-bottom: 12px; }
+    .ph-problem__body pre { background: var(--bg-tertiary, #1e2736); border-radius: 8px; padding: 12px; font-size: 12px; overflow-x: auto; margin-bottom: 12px; border: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); }
+    .ph-hint-box { margin: 12px 20px; padding: 12px 16px; background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.2); border-radius: 10px; font-size: 12.5px; color: #c4b5fd; line-height: 1.5; display: none; }
+    .ph-hint-box.visible { display: block; }
+    .ph-problem__empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 12px; color: var(--text-muted, #6b7280); text-align: center; padding: 32px; }
+    .ph-problem__empty svg { opacity: 0.3; }
+    .ph-problem__empty p { font-size: 13px; }
+
+    /* ── Right panel: editor + output ── */
+    .ph-editor-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .ph-editor-container { flex: 1; overflow: hidden; position: relative; }
+    #monacoEditor { width: 100%; height: 100%; }
+
+    /* ── Output panel ── */
+    .ph-output { height: 200px; flex-shrink: 0; border-top: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); display: flex; flex-direction: column; }
+    .ph-output__header { display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: var(--bg-secondary, #151c2c); border-bottom: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); font-size: 12px; font-weight: 600; color: var(--text-muted, #6b7280); }
+    .ph-output__status { margin-left: auto; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+    .ph-output__status--ok { background: rgba(34,197,94,0.12); color: #22c55e; }
+    .ph-output__status--err { background: rgba(239,68,68,0.12); color: #ef4444; }
+    .ph-output__status--run { background: rgba(234,179,8,0.12); color: #eab308; }
+    .ph-output__body { flex: 1; overflow-y: auto; padding: 12px 16px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 12.5px; line-height: 1.6; color: #e6edf3; white-space: pre-wrap; word-break: break-all; }
+    .ph-output__body.error { color: #f87171; }
+
+    /* ── Verify panel ── */
+    .ph-verify-panel { display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); font-size: 13px; line-height: 1.5; }
+    .ph-verify-panel--ok { background: rgba(34,197,94,0.07); border-left: 3px solid #22c55e; }
+    .ph-verify-panel--err { background: rgba(239,68,68,0.07); border-left: 3px solid #ef4444; }
+    .ph-verify-icon { font-size: 16px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+    .ph-verify-panel--ok .ph-verify-icon { color: #22c55e; }
+    .ph-verify-panel--err .ph-verify-icon { color: #ef4444; }
+    .ph-verify-body { flex: 1; color: var(--text-secondary, #8b949e); }
+    .ph-verify-body strong { color: var(--text-primary, #e6edf3); }
+    .ph-verify-toggle { display: inline-block; margin-top: 6px; background: none; border: 1px solid rgba(239,68,68,0.3); color: #f87171; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
+    .ph-verify-toggle:hover { background: rgba(239,68,68,0.1); }
+    .ph-verify-mistakes { margin: 8px 0 0 0; padding: 0 0 0 16px; color: #fca5a5; font-size: 12.5px; line-height: 1.7; }
+    .ph-verify-mistakes.hidden { display: none; }
+    .ph-verify-mistakes li { margin-bottom: 3px; }
+
+    /* ── Loading overlay ── */
+    .ph-loading { position: absolute; inset: 0; background: rgba(13,17,23,0.7); display: flex; align-items: center; justify-content: center; z-index: 10; backdrop-filter: blur(2px); }
+    .ph-loading__spinner { width: 36px; height: 36px; border: 3px solid rgba(249,115,22,0.2); border-top-color: #f97316; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Mobile Responsive Styles ── */
+    @media (max-width: 1023px) {
+      .ph-main { flex-direction: column; }
+      .ph-problem { width: 100%; height: 40vh; border-right: none; border-bottom: 1px solid var(--border-subtle, rgba(255,255,255,0.07)); }
+      .ph-editor-wrap { height: 60vh; }
+      .ph-output { height: 150px; }
+    }
+    
+    @media (max-width: 767px) {
+      body { font-size: 12px; }
+      .ph-topbar { padding: 8px 12px; flex-wrap: wrap; gap: 8px; }
+      .ph-topbar__back { width: 28px; height: 28px; }
+      .ph-topbar__back svg { width: 14px; height: 14px; }
+      .ph-topbar__logo { font-size: 14px; }
+      .ph-topbar__title { font-size: 12px; }
+      .ph-topbar__lang select, .ph-topbar__diff select { padding: 4px 8px; font-size: 12px; }
+      .ph-btn { padding: 6px 12px; font-size: 12px; }
+      .ph-timer { font-size: 12px; padding: 4px 8px; }
+      .ph-problem { height: 35vh; }
+      .ph-problem__header { padding: 12px 16px 8px; }
+      .ph-problem__title { font-size: 14px; }
+      .ph-problem__body { padding: 12px 16px; font-size: 12px; }
+      .ph-editor-wrap { height: 65vh; }
+      .ph-output { height: 120px; }
+      .ph-output__body { font-size: 11px; padding: 8px 12px; }
+      .ph-hint-box { margin: 8px 16px; padding: 8px 12px; font-size: 11px; }
+    }
+    
+    @media (max-width: 480px) {
+      .ph-topbar { padding: 6px 8px; gap: 6px; }
+      .ph-topbar__spacer { display: none; }
+      .ph-btn { padding: 5px 8px; font-size: 11px; }
+      .ph-btn i { margin-right: 0; }
+      .ph-btn span { display: none; }
+      .ph-timer { font-size: 11px; padding: 3px 6px; }
+      .ph-problem { height: 30vh; }
+      .ph-problem__header { padding: 8px 12px 6px; }
+      .ph-problem__body { padding: 8px 12px; font-size: 11px; }
+      .ph-editor-wrap { height: 70vh; }
+      .ph-output { height: 100px; }
+      .ph-output__body { padding: 6px 8px; }
+    }
+    
+    @media (max-width: 320px) {
+      .ph-topbar { flex-wrap: wrap; }
+      .ph-topbar__lang, .ph-topbar__diff { order: 10; width: 100%; margin-top: 4px; }
+      .ph-topbar__lang select, .ph-topbar__diff select { width: 100%; }
+      .ph-problem { height: 25vh; }
+      .ph-editor-wrap { height: 75vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="ph-topbar">
+    <a href="/pages/dashboard.html" class="ph-topbar__back" title="Back to Dashboard">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+    </a>
+    <a href="/pages/dashboard.html" class="ph-topbar__logo">Pree<span>code</span></a>
+    <div class="ph-topbar__sep"></div>
+    <span class="ph-topbar__title">Practice Here</span>
+    <div class="ph-topbar__spacer"></div>
+    <div class="ph-topbar__lang">
+      <select id="langSelect">
+        <option value="python">Python</option>
+        <option value="javascript">JavaScript</option>
+        <option value="typescript">TypeScript</option>
+        <option value="java">Java</option>
+        <option value="cpp">C++</option>
+        <option value="c">C</option>
+        <option value="go">Go</option>
+        <option value="rust">Rust</option>
+      </select>
+    </div>
+    <div class="ph-topbar__diff">
+      <select id="diffSelect">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+    <div class="ph-topbar__diff">
+      <select id="companySelect">
+        <option value="">Any Company</option>
+        <option value="Amazon">Amazon</option>
+        <option value="Google">Google</option>
+        <option value="Microsoft">Microsoft</option>
+        <option value="Meta">Meta</option>
+        <option value="Apple">Apple</option>
+        <option value="Netflix">Netflix</option>
+        <option value="Uber">Uber</option>
+        <option value="Airbnb">Airbnb</option>
+        <option value="LinkedIn">LinkedIn</option>
+        <option value="Adobe">Adobe</option>
+      </select>
+    </div>
+    <button class="ph-btn ph-btn--gen" id="genBtn">
+      <i class="fa-solid fa-wand-magic-sparkles"></i> New Question
+    </button>
+    <button class="ph-btn ph-btn--hint" id="hintBtn" disabled>
+      <i class="fa-solid fa-lightbulb"></i> Hint
+    </button>
+    <button class="ph-btn ph-btn--solution" id="solutionBtn" disabled>
+      <i class="fa-solid fa-eye"></i> Solution
+    </button>
+    <span class="ph-timer" id="timerDisplay">00:00</span>
+    <button class="ph-btn ph-btn--run" id="runBtn">
+      <i class="fa-solid fa-play"></i> Run
+    </button>
+    <button class="ph-btn ph-btn--save" id="saveBtn">
+      <i class="fa-solid fa-floppy-disk"></i> Save
+    </button>
+  </div>
+
+  <!-- Main -->
+  <div class="ph-main">
+
+    <!-- Problem Panel -->
+    <div class="ph-problem">
+      <div class="ph-problem__header" id="problemHeader" style="display:none">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+          <span class="ph-problem__badge" id="diffBadge">Medium</span>
+          <span class="ph-problem__company" id="companyBadge" style="display:none">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+            <span id="companyName"></span>
+          </span>
+        </div>
+        <div class="ph-problem__title" id="problemTitle">Problem</div>
+      </div>
+      <div class="ph-problem__body" id="problemBody">
+        <div class="ph-problem__empty">
+          <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+          <p>Click <strong>New Question</strong> to generate an AI coding challenge</p>
+        </div>
+      </div>
+      <div class="ph-hint-box" id="hintBox"></div>
+    </div>
+
+    <!-- Editor + Output -->
+    <div class="ph-editor-wrap">
+      <div class="ph-editor-container">
+        <div id="monacoEditor"></div>
+        <div class="ph-loading" id="editorLoading">
+          <div class="ph-loading__spinner"></div>
+        </div>
+      </div>
+      <div class="ph-output">
+        <div class="ph-output__header">
+          <i class="fa-solid fa-terminal" style="font-size:11px"></i>
+          Output
+          <span class="ph-output__status" id="outputStatus" style="display:none"></span>
+        </div>
+        <div class="ph-verify-panel" id="verifyPanel" style="display:none"></div>
+        <div class="ph-output__body" id="outputBody">Run your code to see output here...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Monaco Editor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+  <script src="/pages/mobile-app-enhancements.js" defer></script>
+  <script src="/pages/practice-here.js"></script>
+</body>
+</html>

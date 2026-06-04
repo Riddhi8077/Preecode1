@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Preecode – Resume Analysis</title>
+  <script src="/theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/tailwind-config.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/mobile-enhancements.js" defer></script>
+  <style>
+    .skill-tag { display:inline-block; padding:3px 10px; border-radius:999px; font-size:.75rem; font-weight:500; margin:3px; }
+    .skill-tag.green { background:rgba(34,197,94,.12); color:#4ade80; }
+    .skill-tag.amber { background:rgba(245,158,11,.12); color:#fbbf24; }
+    @media (max-width: 767px) {
+      .skill-tag { font-size: 0.7rem; padding: 2px 8px; margin: 2px; }
+    }
+  </style>
+</head>
+<body class="bg-th-bg text-txt font-sans min-h-screen text-sm antialiased">
+
+  <div class="app-shell min-h-screen relative z-10">
+    <div class="app-main flex-1 flex flex-col">
+      <div class="page-content flex-1 p-4 md:p-7 max-w-[1200px] w-full mx-auto opacity-0 animate-fade-in">
+
+        <!-- Error -->
+        <div id="errorBanner" class="hidden mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm"></div>
+
+        <!-- Skeleton -->
+        <div id="skeleton" class="space-y-4">
+          <div class="dash-v4-stats" style="grid-template-columns:repeat(3,1fr)">
+            <div class="dash-v4-stat h-28 animate-pulse bg-th-surface"></div>
+            <div class="dash-v4-stat h-28 animate-pulse bg-th-surface"></div>
+            <div class="dash-v4-stat h-28 animate-pulse bg-th-surface"></div>
+          </div>
+          <div class="dash-v4-card h-48 animate-pulse bg-th-surface"></div>
+        </div>
+
+        <!-- Content -->
+        <div id="analysisContent" class="hidden space-y-5">
+
+          <div class="mb-2">
+            <h1 class="text-xl font-semibold text-txt" id="pageTitle">Resume Analysis</h1>
+            <p class="text-txt-muted text-xs mt-1" id="pageMeta"></p>
+          </div>
+
+          <!-- Score cards -->
+          <div class="dash-v4-stats" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+            <div class="dash-v4-stat tint-blue">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">ATS Score</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="atsScore">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+              <div class="dash-v4-stat__bar"><div class="dash-v4-stat__fill" id="atsBar"></div></div>
+            </div>
+            <div class="dash-v4-stat tint-green">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Structure Score</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="structureScore">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+              <div class="dash-v4-stat__bar"><div class="dash-v4-stat__fill" id="structureBar"></div></div>
+            </div>
+            <div class="dash-v4-stat tint-purple">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Role Match</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="matchScore">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+              <div class="dash-v4-stat__bar"><div class="dash-v4-stat__fill" id="matchBar"></div></div>
+            </div>
+          </div>
+
+          <!-- Skills + Suggestions -->
+          <div class="flex flex-col md:flex-row gap-4">
+
+            <!-- Skills -->
+            <div class="dash-v4-card flex-1">
+              <div class="dash-v4-card__header mb-3">
+                <span class="dash-v4-card__title">Your Skills</span>
+              </div>
+              <div id="skillsList"></div>
+
+              <div class="mt-4 pt-3 border-t border-th-border">
+                <p class="text-xs font-medium text-txt-muted mb-2">Missing Skills</p>
+                <div id="missingSkillsList"></div>
+              </div>
+            </div>
+
+            <!-- Suggestions -->
+            <div class="dash-v4-card flex-1">
+              <div class="dash-v4-card__header mb-3">
+                <span class="dash-v4-card__title">AI Suggestions</span>
+              </div>
+              <ol class="space-y-3 list-none" id="suggestionsList"></ol>
+            </div>
+
+          </div>
+
+          <!-- Actions -->
+          <div class="flex flex-wrap gap-3">
+            <a href="/pages/resume-upload.html" class="dash-v4-practice__cta" style="background:var(--th-surface);color:var(--txt);border:1px solid var(--th-border)">Upload New Resume</a>
+            <a href="#" id="useInInterviewBtn" class="dash-v4-practice__cta">Use This Resume in Interview</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/api.js"></script>
+  <script src="/layout/layout.js"></script>
+  <script src="/layout/chatbot.js"></script>
+  <script src="/layout/early-access.js"></script>
+  <script>
+  (function () {
+    const params   = new URLSearchParams(window.location.search);
+    const resumeId = params.get('id');
+    if (!resumeId) { showError('No resume ID.'); return; }
+
+    const token = localStorage.getItem('token');
+
+    fetch(API_BASE + '/v2/resume/analysis/' + resumeId, {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('skeleton').classList.add('hidden');
+      document.getElementById('analysisContent').classList.remove('hidden');
+
+      const { resume, score } = data;
+
+      document.getElementById('pageTitle').textContent = resume.fileName || 'Resume Analysis';
+      document.getElementById('pageMeta').textContent  = 'Uploaded ' + new Date(resume.uploadedAt).toLocaleDateString() + (score ? ' · Target: ' + score.targetRole : '');
+
+      // Scores
+      const ats  = resume.atsScore || 0;
+      const str  = resume.structureScore || 0;
+      const match = score?.matchScore || 0;
+      document.getElementById('atsScore').textContent       = ats;
+      document.getElementById('structureScore').textContent = str;
+      document.getElementById('matchScore').textContent     = match;
+      document.getElementById('atsBar').style.width       = ats + '%';
+      document.getElementById('structureBar').style.width = str + '%';
+      document.getElementById('matchBar').style.width     = match + '%';
+
+      // Skills
+      const skillsEl = document.getElementById('skillsList');
+      (resume.skills || []).forEach(s => {
+        const tag = document.createElement('span');
+        tag.className = 'skill-tag green';
+        tag.textContent = s;
+        skillsEl.appendChild(tag);
+      });
+      if (!resume.skills?.length) skillsEl.innerHTML = '<span class="text-txt-muted text-xs">No skills detected</span>';
+
+      // Missing skills
+      const missingEl = document.getElementById('missingSkillsList');
+      (score?.missingSkills || []).forEach(s => {
+        const tag = document.createElement('span');
+        tag.className = 'skill-tag amber';
+        tag.textContent = s;
+        missingEl.appendChild(tag);
+      });
+      if (!score?.missingSkills?.length) missingEl.innerHTML = '<span class="text-txt-muted text-xs">None identified</span>';
+
+      // Suggestions
+      const sugEl = document.getElementById('suggestionsList');
+      (score?.suggestions || []).forEach((s, i) => {
+        const li = document.createElement('li');
+        li.className = 'flex gap-3 text-sm text-txt leading-relaxed';
+        li.innerHTML = `<span class="flex-shrink-0 w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-semibold">${i+1}</span><span>${s}</span>`;
+        sugEl.appendChild(li);
+      });
+
+      // Use in interview link
+      document.getElementById('useInInterviewBtn').href = '/pages/interview-setup.html?resumeId=' + resumeId;
+    })
+    .catch(() => showError('Failed to load analysis.'));
+
+    function showError(msg) {
+      document.getElementById('skeleton').classList.add('hidden');
+      const b = document.getElementById('errorBanner');
+      b.textContent = msg;
+      b.classList.remove('hidden');
+    }
+  })();
+  </script>
+</body>
+</html>

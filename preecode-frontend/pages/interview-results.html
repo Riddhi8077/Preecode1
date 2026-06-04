@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Preecode – Interview Results</title>
+  <script src="/theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/tailwind-config.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/mobile-enhancements.js" defer></script>
+  <style>
+    .score-circle { width:120px; height:120px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; border:4px solid var(--accent,#6366f1); }
+    .accordion-body { display:none; }
+    .accordion-body.open { display:block; }
+    .metric-pill { display:inline-flex; align-items:center; gap:4px; padding:2px 10px; border-radius:999px; font-size:.75rem; font-weight:500; }
+    @media (max-width: 767px) {
+      .score-circle { width: 100px; height: 100px; }
+      .metric-pill { font-size: 0.7rem; padding: 1px 8px; }
+    }
+    @media (max-width: 480px) {
+      .score-circle { width: 80px; height: 80px; }
+    }
+  </style>
+  </style>
+</head>
+<body class="bg-th-bg text-txt font-sans min-h-screen text-sm antialiased">
+
+  <div class="app-shell min-h-screen relative z-10">
+    <div class="app-main flex-1 flex flex-col">
+      <div class="page-content flex-1 p-4 md:p-7 max-w-[1200px] w-full mx-auto opacity-0 animate-fade-in">
+
+        <!-- Error -->
+        <div id="errorBanner" class="hidden mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm"></div>
+
+        <!-- Skeleton loader -->
+        <div id="skeleton" class="space-y-4">
+          <div class="dash-v4-card h-40 animate-pulse bg-th-surface"></div>
+          <div class="dash-v4-card h-24 animate-pulse bg-th-surface"></div>
+          <div class="dash-v4-card h-32 animate-pulse bg-th-surface"></div>
+        </div>
+
+        <!-- Results (hidden until loaded) -->
+        <div id="resultsContent" class="hidden space-y-5">
+
+          <!-- Overall score -->
+          <div class="dash-v4-card flex flex-col md:flex-row items-center gap-6">
+            <div class="score-circle">
+              <span class="text-3xl font-bold text-accent" id="overallScore">0</span>
+              <span class="text-xs text-txt-muted mt-1">/ 100</span>
+            </div>
+            <div>
+              <h2 class="text-lg font-semibold text-txt" id="interviewTitle">Interview Results</h2>
+              <p class="text-txt-muted text-xs mt-1" id="interviewMeta"></p>
+            </div>
+          </div>
+
+          <!-- Score breakdown -->
+          <div class="dash-v4-stats" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+            <div class="dash-v4-stat tint-blue">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Relevance</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="avgRelevance">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+            </div>
+            <div class="dash-v4-stat tint-green">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Completeness</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="avgCompleteness">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+            </div>
+            <div class="dash-v4-stat tint-purple">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Clarity</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="avgClarity">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+            </div>
+            <div class="dash-v4-stat tint-orange">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Confidence</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="avgConfidence">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Per-question accordion -->
+          <div class="dash-v4-card">
+            <div class="dash-v4-card__header mb-3">
+              <span class="dash-v4-card__title">Answer Breakdown</span>
+            </div>
+            <div id="accordionList" class="space-y-2"></div>
+          </div>
+
+          <!-- Bottom actions -->
+          <div class="flex flex-wrap gap-3">
+            <a href="/pages/interview-setup.html" class="dash-v4-practice__cta">Retake Interview</a>
+            <a href="/pages/placement-dashboard.html" class="dash-v4-practice__cta" style="background:var(--th-surface);color:var(--txt);border:1px solid var(--th-border)">View Dashboard</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/api.js"></script>
+  <script src="/layout/layout.js"></script>
+  <script src="/layout/chatbot.js"></script>
+  <script src="/layout/early-access.js"></script>
+  <script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const interviewId = params.get('id');
+    if (!interviewId) { showError('No interview ID.'); return; }
+
+    const token = localStorage.getItem('token');
+
+    fetch(API_BASE + '/v2/interview/results/' + interviewId, {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('skeleton').classList.add('hidden');
+      document.getElementById('resultsContent').classList.remove('hidden');
+
+      const { interview, answers } = data;
+
+      document.getElementById('overallScore').textContent = interview.overallScore || 0;
+      document.getElementById('interviewTitle').textContent = interview.role + ' — ' + interview.difficulty;
+      document.getElementById('interviewMeta').textContent =
+        'Completed ' + new Date(interview.completedAt || interview.createdAt).toLocaleDateString();
+
+      if (answers && answers.length) {
+        const avg = (key) => Math.round(answers.reduce((s, a) => s + (a.answerScore[key] || 0), 0) / answers.length);
+        document.getElementById('avgRelevance').textContent    = avg('relevance');
+        document.getElementById('avgCompleteness').textContent = avg('completeness');
+        document.getElementById('avgClarity').textContent      = avg('clarity');
+        // Confidence = average energyScore from speechMetrics
+        const avgConf = Math.round(answers.reduce((s, a) => s + (a.speechMetrics?.energyScore || 0), 0) / answers.length);
+        document.getElementById('avgConfidence').textContent = avgConf;
+
+        const list = document.getElementById('accordionList');
+        answers.forEach((ans, i) => {
+          const item = document.createElement('div');
+          item.className = 'border border-th-border rounded-lg overflow-hidden';
+          item.innerHTML = `
+            <button class="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-th-surface/50 transition-colors" onclick="this.nextElementSibling.classList.toggle('open')">
+              <span class="font-medium text-txt">Q${i+1}: ${(ans.questionText||'').slice(0,80)}${ans.questionText?.length>80?'…':''}</span>
+              <svg class="w-4 h-4 text-txt-muted flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="accordion-body px-4 pb-4 space-y-3">
+              <div>
+                <p class="text-xs font-medium text-txt-muted mb-1">Transcript</p>
+                <p class="text-txt text-sm leading-relaxed">${ans.transcription || '—'}</p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span class="metric-pill bg-blue-500/10 text-blue-400">Speech: ${ans.speechMetrics?.speechRate||0} wpm</span>
+                <span class="metric-pill bg-amber-500/10 text-amber-400">Fillers: ${ans.speechMetrics?.fillerWordPercent||0}%</span>
+                <span class="metric-pill bg-green-500/10 text-green-400">Clarity: ${ans.speechMetrics?.clarityScore||0}</span>
+                <span class="metric-pill bg-purple-500/10 text-purple-400">Energy: ${ans.speechMetrics?.energyScore||0}</span>
+              </div>
+              <div>
+                <p class="text-xs font-medium text-txt-muted mb-1">AI Feedback</p>
+                <p class="text-txt text-sm leading-relaxed">${ans.aiFeedback || '—'}</p>
+              </div>
+            </div>`;
+          list.appendChild(item);
+        });
+      }
+    })
+    .catch(() => showError('Failed to load results.'));
+
+    function showError(msg) {
+      document.getElementById('skeleton').classList.add('hidden');
+      const b = document.getElementById('errorBanner');
+      b.textContent = msg;
+      b.classList.remove('hidden');
+    }
+  })();
+  </script>
+</body>
+</html>

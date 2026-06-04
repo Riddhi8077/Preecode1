@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Preecode – Dashboard</title>
+  <script src="/theme.js"></script>
+  <script src="/mobile-detection.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/tailwind-config.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/mobile-dashboard-fix.css" />
+  <script src="/mobile-enhancements.js" defer></script>
+</head>
+<body class="bg-th-bg text-txt font-sans min-h-screen text-sm antialiased">
+
+  <div class="app-shell min-h-screen relative z-10">
+    <div class="app-main flex-1 flex flex-col">
+      <div class="dash-v4">
+
+        <!-- ═══ PERFORMANCE METRICS ═══ -->
+        <section class="dash-v4-stats dash-v4-anim dash-v4-anim-1" id="statsGrid">
+          <!-- Total Solved (dominant) -->
+          <div class="dash-v4-stat dash-v4-stat--primary tint-blue">
+            <div class="dash-v4-stat__accent"></div>
+            <p class="dash-v4-stat__label">Total Solved</p>
+            <div class="dash-v4-stat__row">
+              <span class="dash-v4-stat__num dash-v4-stat__num--xl" id="statTotal">0</span>
+              <span class="dash-v4-stat__unit">problems</span>
+            </div>
+            <div class="dash-v4-stat__trend neutral" id="totalTrend">
+              <span>+0 this week</span>
+            </div>
+            <div class="dash-v4-stat__bar"><div class="dash-v4-stat__fill" id="totalProgress"></div></div>
+          </div>
+
+          <!-- Accuracy Rate -->
+          <div class="dash-v4-stat tint-green">
+            <div class="dash-v4-stat__accent"></div>
+            <p class="dash-v4-stat__label">Accuracy Rate</p>
+            <div class="dash-v4-stat__row">
+              <span class="dash-v4-stat__num" id="statAccuracy">0</span>
+              <span class="dash-v4-stat__unit">%</span>
+            </div>
+            <div class="dash-v4-stat__trend neutral" id="accuracyTrend">
+              <span>0 / 0 accepted</span>
+            </div>
+            <div class="dash-v4-stat__bar"><div class="dash-v4-stat__fill" id="accuracyProgress"></div></div>
+          </div>
+
+          <!-- Average Solve Time - Hide on mobile -->
+          <div class="dash-v4-stat tint-purple mobile-hide">
+            <div class="dash-v4-stat__accent"></div>
+            <p class="dash-v4-stat__label">Avg Solve Time</p>
+            <div class="dash-v4-stat__row">
+              <span class="dash-v4-stat__num" id="statTime">0</span>
+              <span class="dash-v4-stat__unit">min</span>
+            </div>
+            <div class="dash-v4-stat__trend neutral" id="timeTrend">
+              <span>No sessions yet</span>
+            </div>
+            <div class="dash-v4-stat__bar"><div class="dash-v4-stat__fill" id="timeProgress"></div></div>
+          </div>
+
+          <!-- Placement Readiness - Simplified for mobile -->
+          <div class="dash-v4-stat tint-orange" style="cursor:pointer" onclick="window.location.href='/pages/placement-dashboard.html'" title="View Placement Dashboard">
+            <div class="dash-v4-stat__accent"></div>
+            <p class="dash-v4-stat__label">Placement Ready</p>
+            <div class="dash-v4-stat__row">
+              <span class="dash-v4-stat__num" id="statReadiness" style="color:var(--accent)">0</span>
+              <span class="dash-v4-stat__unit">/100</span>
+            </div>
+            <div class="dash-v4-stat__trend neutral" id="readinessTrend">
+              <span>Start solving</span>
+            </div>
+            <div class="dash-v4-stat__bar"><div class="dash-v4-stat__fill" id="readinessProgress"></div></div>
+          </div>
+        </section>
+
+        <!-- ═══ DEVELOPER PRACTICE - Simplified for mobile ═══ -->
+        <section class="dash-v4-practice dash-v4-anim dash-v4-anim-2" id="practicePanel">
+          <div class="dash-v4-practice__glow"></div>
+          <div class="dash-v4-card__header">
+            <span class="dash-v4-card__title">Practice Environment</span>
+            <span class="dash-section-badge" id="practiceCount">0</span>
+          </div>
+          <div class="dash-v4-practice__stats mobile-simple" id="practiceStatsRow">
+            <div class="dash-v4-practice__stat">
+              <div class="dash-v4-practice__val" id="practiceTotalTime">0h</div>
+              <div class="dash-v4-practice__lbl">Total Time</div>
+            </div>
+            <div class="dash-v4-practice__stat mobile-hide">
+              <div class="dash-v4-practice__val" id="practiceLastSession">--</div>
+              <div class="dash-v4-practice__lbl">Last Session</div>
+            </div>
+            <div class="dash-v4-practice__stat">
+              <div class="dash-v4-practice__val" id="practiceSessions">0</div>
+              <div class="dash-v4-practice__lbl">Sessions</div>
+            </div>
+          </div>
+          <div class="dash-v4-practice__cta-wrap">
+            <a href="https://marketplace.visualstudio.com/items?itemName=Preecode.preecode" target="_blank" rel="noopener noreferrer" id="startPracticeSessionBtn" class="dash-v4-practice__cta">
+              Start Practice
+            </a>
+            <p class="dash-v4-practice__cta-hint mobile-hide">Install the free Preecode extension to start timed coding sessions directly in your editor</p>
+          </div>
+        </section>
+
+        <!-- ═══ STREAK TRACKER - Mobile optimized ═══ -->
+        <section class="dash-v4-card dash-v4-streak-card dash-v4-anim dash-v4-anim-3">
+          <div class="dash-v4-card__header">
+            <span class="dash-v4-card__title">Streak Tracker</span>
+          </div>
+          <!-- Simplified streak display for mobile -->
+          <div class="dash-v4-streak__mobile">
+            <div class="dash-v4-streak__current">
+              <span class="dash-v4-streak__flame" id="streakFlame">🔥</span>
+              <div class="dash-v4-streak__info">
+                <span class="dash-v4-streak__val" id="currentStreak">0</span>
+                <span class="dash-v4-streak__lbl">day streak</span>
+              </div>
+              <div class="dash-v4-streak__best-mobile">
+                <span class="dash-v4-streak__best-label">Best: </span>
+                <span class="dash-v4-streak__best-val" id="bestStreak">0</span>
+              </div>
+            </div>
+            <div class="dash-v4-streak__milestones mobile-simple" id="streakMilestones">
+              <div class="streak-milestone" data-target="7">
+                <span class="streak-milestone-icon">🔥</span>
+                <span class="streak-milestone-label">7 Days</span>
+              </div>
+              <div class="streak-milestone" data-target="30">
+                <span class="streak-milestone-icon">⭐</span>
+                <span class="streak-milestone-label">30 Days</span>
+              </div>
+              <div class="streak-milestone mobile-hide" data-target="100">
+                <span class="streak-milestone-icon">🏆</span>
+                <span class="streak-milestone-label">100 Days</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══ RECENT SUBMISSIONS - Mobile optimized ═══ -->
+        <section class="dash-v4-card dash-v4-anim dash-v4-anim-4">
+          <div class="dash-v4-card__header">
+            <span class="dash-v4-card__title">Recent Submissions</span>
+            <span class="dash-section-badge" id="subCount">0</span>
+          </div>
+          <div class="mobile-table-wrapper">
+            <table class="dash-v4-table mobile-table">
+              <thead>
+                <tr>
+                  <th data-sort="name">Problem</th>
+                  <th data-sort="difficulty" class="mobile-hide">Difficulty</th>
+                  <th data-sort="status">Status</th>
+                  <th data-sort="date" class="mobile-hide">Date</th>
+                </tr>
+              </thead>
+              <tbody id="submissionsBody">
+                <!-- JS populates or shows empty state -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/api.js"></script>
+  <script>
+    // If OAuth redirected back with a token in querystring, persist it before layout runs
+    (function () {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var t = params.get('token');
+        if (t) {
+          localStorage.setItem('token', t);
+          params.delete('token');
+          var newSearch = params.toString();
+          var newUrl = window.location.pathname + (newSearch ? '?' + newSearch : '');
+          history.replaceState({}, document.title, newUrl);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script src="/layout/layout.js"></script>
+  <script src="/layout/chatbot.js"></script>
+  <script src="/layout/early-access.js"></script>
+  <script src="/mobile-enhancements.js" defer></script>
+  <script src="/force-mobile-styles.js" defer></script>
+  <script src="/pages/mobile-app-enhancements.js" defer></script>
+  <script src="/mobile-test.js" defer></script>
+  <script src="/pages/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Auth callback</title>
+  <style>body{background:#0B0F14;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:Inter,system-ui,Arial}</style>
+</head>
+<body>
+  <div id="container" style="text-align:center;max-width:520px;padding:24px">
+    <h2 id="title" style="margin-bottom:8px">Signing you in…</h2>
+    <p id="msg" style="color:#9ca3af">Please wait — finishing authentication.</p>
+    <div id="actions" style="margin-top:18px;display:none">
+      <a id="goLogin" href="/login.html" style="color:#ffa116;margin-right:12px;text-decoration:none">Go to Sign In</a>
+      <a id="goHome" href="/" style="color:#9ca3af;text-decoration:none">Return Home</a>
+    </div>
+  </div>
+
+  <script>
+    (async function () {
+      try {
+        var API_BASE = (function resolveApiBase() {
+          if (typeof window !== 'undefined' && window.PREECODE_CONFIG && window.PREECODE_CONFIG.BACKEND_URL) {
+            return String(window.PREECODE_CONFIG.BACKEND_URL).replace(/\/$/, '') + '/api';
+          }
+
+          if (typeof window !== 'undefined') {
+            var host = window.location.hostname;
+            if (host === 'localhost' || host === '127.0.0.1') {
+              return 'http://localhost:5001/api';
+            }
+          }
+
+          return 'https://preecode-backend.onrender.com/api';
+        })();
+
+        var params = new URLSearchParams(window.location.search);
+        var token = params.get('token');
+        var error = params.get('error');
+        var msg = document.getElementById('msg');
+
+        if (error && !token) {
+          // Show a friendly error with actions; do not auto-redirect immediately.
+          var title = document.getElementById('title');
+          title.textContent = 'Authentication failed';
+          msg.textContent = 'There was a problem signing you in: ' + (error || 'unknown error') + '. Please try again.';
+          console.warn('OAuth error:', error);
+          var actions = document.getElementById('actions');
+          actions.style.display = 'block';
+          return;
+        }
+
+        if (token) {
+          // Persist token
+          try { localStorage.setItem('token', token); } catch (e) { /* ignore */ }
+
+          // Check if we need to redirect to VS Code extension
+          var redirectParam = params.get('redirect');
+          if (redirectParam && redirectParam.toLowerCase().startsWith('vscode://')) {
+            // Build the VS Code deep link with token
+            var decodedRedirect = decodeURIComponent(redirectParam);
+            var sep = decodedRedirect.indexOf('?') === -1 ? '?' : '&';
+            var vscodeDeepLink = decodedRedirect + sep + 'token=' + encodeURIComponent(token);
+
+            msg.textContent = 'Signed in — opening VS Code...';
+
+            // Try to open VS Code via the deep link
+            setTimeout(function () {
+              window.location.href = vscodeDeepLink;
+            }, 500);
+
+            // Show fallback instructions after a delay in case the redirect doesn't work
+            setTimeout(function () {
+              msg.innerHTML = 'If VS Code did not open, <a href="' + vscodeDeepLink + '" style="color:#ffa116">click here</a> or copy this link:<br><code style="font-size:10px;word-break:break-all;color:#9ca3af">' + vscodeDeepLink + '</code>';
+            }, 3000);
+            return;
+          }
+
+          // Hydrate user profile for navbar/dashboard/submissions after OAuth login
+          try {
+            var meRes = await fetch(API_BASE + '/users/me', {
+              headers: { Authorization: 'Bearer ' + token },
+              credentials: 'include'
+            });
+            if (meRes.ok) {
+              var me = await meRes.json();
+              if (me && me._id) localStorage.setItem('preecode_uid', me._id);
+              if (me && me.avatar) localStorage.setItem('preecode_avatar', me.avatar);
+
+              var resolvedName = '';
+              if (me && me.username) {
+                resolvedName = me.username;
+              } else if (me && me.email && me.email.indexOf('@') !== -1) {
+                resolvedName = me.email.split('@')[0];
+              }
+              if (resolvedName) localStorage.setItem('preecode_name', resolvedName);
+
+              if (me && me.plan) localStorage.setItem('preecode_plan', me.plan);
+              if (me && me.foundingBadgeLevel) localStorage.setItem('preecode_badge', me.foundingBadgeLevel);
+              if (me && me.hasShared !== undefined) localStorage.setItem('preecode_shared', me.hasShared);
+            }
+          } catch (e) {
+            // Ignore hydrate failure; token is still valid for app navigation
+          }
+
+          // If opened as a popup, notify opener and close
+          if (window.opener && !window.opener.closed) {
+            try {
+              window.opener.postMessage({ type: 'preecode_oauth', token: token }, '*');
+            } catch (e) {
+              // ignore
+            }
+            window.close();
+            return;
+          }
+
+          // Navigate to dashboard (no automatic VS Code deep-link open).
+          msg.textContent = 'Signed in — redirecting to dashboard...';
+          // remove token from URL for cleanliness
+          params.delete('token');
+          var newSearch = params.toString();
+          var newUrl = '/pages/dashboard.html' + (newSearch ? '?' + newSearch : '');
+          setTimeout(function () { window.location.href = newUrl; }, 700);
+          return;
+        }
+
+        // No token & no error — show actions to let user continue to login
+        title.textContent = 'Authentication incomplete';
+        msg.textContent = 'No authentication token was returned. Please sign in manually.';
+        document.getElementById('actions').style.display = 'block';
+      } catch (e) {
+        try { localStorage.removeItem('token'); } catch (e) {}
+        window.location.href = '/login.html';
+      }
+    })();
+  </script>
+</body>
+</html>

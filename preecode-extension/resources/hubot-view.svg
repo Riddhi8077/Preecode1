@@ -1,0 +1,6 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <path d="M7 7.5C7 5.567 8.567 4 10.5 4h3C15.433 4 17 5.567 17 7.5V9h.25A2.75 2.75 0 0 1 20 11.75v3.5A2.75 2.75 0 0 1 17.25 18H14.2l-2.78 1.85A.85.85 0 0 1 10 19.15V18H6.75A2.75 2.75 0 0 1 4 15.25v-3.5A2.75 2.75 0 0 1 6.75 9H7V7.5Z" fill="currentColor"/>
+  <circle cx="9" cy="13" r="1" fill="var(--vscode-activityBar-background)"/>
+  <circle cx="12" cy="13" r="1" fill="var(--vscode-activityBar-background)"/>
+  <circle cx="15" cy="13" r="1" fill="var(--vscode-activityBar-background)"/>
+</svg>

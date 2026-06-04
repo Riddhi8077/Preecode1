@@ -1,0 +1,9 @@
+node_modules/
+.env
+*.log
+tmpclaude-*
+<<<<<<< HEAD
+.env.local
+.env.production
+=======
+>>>>>>> cd623c4 (restore: backend source files from main branch)

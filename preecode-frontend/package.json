@@ -1,0 +1,14 @@
+{
+  "name": "preecode-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Preecode web dashboard frontend with enhanced UI/UX",
+  "scripts": {
+    "dev": "serve -l 5173 .",
+    "start": "serve -l 4173 .",
+    "build": "rm -rf dist && mkdir -p dist && cp -R assets auth layout pages api.js app.js index.html login.html register.html about.html privacy.html terms.html legal.html forgot-password.html styles.css tailwind-config.js theme.js dist/"
+  },
+  "devDependencies": {
+    "serve": "^14.2.5"
+  }
+}

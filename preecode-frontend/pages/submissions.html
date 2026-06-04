@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Preecode – Submissions</title>
+  <script src="/theme.js"></script>
+  <script src="/mobile-detection.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/tailwind-config.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/mobile-enhancements.js" defer></script>
+</head>
+<body class="bg-th-bg text-txt font-sans min-h-screen text-sm antialiased">
+
+  <div class="app-shell min-h-screen relative z-10">
+    <div class="app-main flex-1 flex flex-col">
+      <div class="page-content flex-1 p-4 md:p-7 max-w-[1200px] w-full mx-auto opacity-0 animate-fade-in">
+
+        <!-- Summary Stats Row -->
+        <div class="stats-row opacity-0 animate-fade-in-1" id="statsRow">
+          <div class="stat-item">
+            <div class="stat-value" id="statTotalSubs">0</div>
+            <div class="stat-label">Total</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="color:var(--success)" id="statAccepted">0</div>
+            <div class="stat-label">Accepted</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="color:var(--danger)" id="statWrong">0</div>
+            <div class="stat-label">Wrong</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="color:var(--accent)" id="statAccRate">0%</div>
+            <div class="stat-label">Accuracy</div>
+          </div>
+        </div>
+
+        <!-- Filter -->
+        <div class="flex gap-3 mb-5 opacity-0 animate-fade-in-1">
+          <select id="statusFilter" class="filter-control cursor-pointer min-w-[160px]">
+            <option value="">All Status</option>
+            <option value="accepted">Accepted</option>
+            <option value="wrong">Wrong</option>
+          </select>
+        </div>
+
+        <!-- Submissions Table -->
+        <div class="app-card p-6 opacity-0 animate-fade-in-2">
+          <div class="flex items-center justify-between mb-4">
+            <span class="section-header">All Submissions</span>
+            <span class="text-xs text-txt-muted bg-th-hover border border-bdr px-3 py-0.5 rounded-full" id="subCount">0</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="app-table min-w-[560px]">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Problem</th>
+                  <th>Topic</th>
+                  <th>Difficulty</th>
+                  <th>Status</th>
+                  <th>Time</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="submissionsBody">
+                <tr><td colspan="5"><div class="skeleton-row"><div class="skeleton" style="width:24px;height:12px"></div><div class="skeleton skeleton-line" style="width:45%;flex:1"></div><div class="skeleton" style="width:50px;height:20px;border-radius:6px"></div><div class="skeleton" style="width:60px;height:20px;border-radius:6px"></div><div class="skeleton" style="width:70px;height:12px"></div></div><div class="skeleton-row"><div class="skeleton" style="width:24px;height:12px"></div><div class="skeleton skeleton-line" style="width:55%;flex:1"></div><div class="skeleton" style="width:50px;height:20px;border-radius:6px"></div><div class="skeleton" style="width:60px;height:20px;border-radius:6px"></div><div class="skeleton" style="width:70px;height:12px"></div></div><div class="skeleton-row"><div class="skeleton" style="width:24px;height:12px"></div><div class="skeleton skeleton-line" style="width:35%;flex:1"></div><div class="skeleton" style="width:50px;height:20px;border-radius:6px"></div><div class="skeleton" style="width:60px;height:20px;border-radius:6px"></div><div class="skeleton" style="width:70px;height:12px"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination -->
+          <div class="pagination" id="pagination"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/api.js"></script>
+  <script src="/layout/layout.js"></script>
+  <script src="/layout/chatbot.js"></script>
+  <script src="/layout/early-access.js"></script>
+  <script src="/mobile-enhancements.js" defer></script>
+  <script src="/force-mobile-styles.js" defer></script>
+  <script src="/pages/mobile-app-enhancements.js" defer></script>
+  <script src="/pages/submissions.js"></script>
+</body>
+</html>

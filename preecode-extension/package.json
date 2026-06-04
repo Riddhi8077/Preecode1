@@ -1,0 +1,139 @@
+{
+  "name": "preecode",
+  "publisher": "Preecode",
+  "displayName": "Preecode",
+  "description": "AI-powered coding practice and skill-building platform inside VS Code.",
+  "version": "0.1.7",
+  "main": "./out/extension.js",
+  "icon": "icon.png",
+  "license": "MIT",
+  "homepage": "https://preecode.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Prashantpd7/Preecode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Prashantpd7/Preecode/issues"
+  },
+  "keywords": [
+    "coding",
+    "practice",
+    "ai",
+    "debugging",
+    "programming",
+    "learning"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onUri"
+  ],
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "Preecode",
+      "properties": {
+        "preecode.backendUrl": {
+          "type": "string",
+          "default": "https://preecode-backend.onrender.com",
+          "description": "Base URL of the Preecode backend service."
+        },
+        "preecode.frontendUrl": {
+          "type": "string",
+          "default": "https://preecode.vercel.app",
+          "description": "Base URL of the Preecode frontend website."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "preecode",
+          "title": "Preecode",
+          "icon": "resources/hubot-view.svg"
+        }
+      ]
+    },
+    "views": {
+      "preecode": [
+        {
+          "id": "preecode.controlCenter",
+          "name": "Control Center",
+          "type": "webview",
+          "icon": "resources/hubot-view.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "preecode.openControlCenter",
+        "title": "Preecode: Open Control Center",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "preecode.login",
+        "title": "Preecode: Login",
+        "icon": "$(account)"
+      },
+      {
+        "command": "preecode.logout",
+        "title": "Preecode: Logout",
+        "icon": "$(sign-out)"
+      },
+      {
+        "command": "preecode.quickPractice",
+        "title": "Preecode: Practice",
+        "icon": "$(play)"
+      },
+      {
+        "command": "preecode.debugSelection",
+        "title": "Preecode: Debug Selection",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "preecode.explainSelection",
+        "title": "Preecode: Explain Selection",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "preecode.reviewCode",
+        "title": "Preecode: Review Code",
+        "icon": "$(checklist)"
+      },
+      {
+        "command": "preecode.restartTour",
+        "title": "Preecode: Restart Tour",
+        "icon": "$(play-circle)"
+      }
+    ],
+    "menus": {}
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.109.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "monaco-editor": "^0.52.2",
+    "node-fetch": "^3.3.2"
+  }
+}

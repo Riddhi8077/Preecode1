@@ -1,0 +1,377 @@
+/* Mobile Dashboard Fix - Comprehensive mobile responsive styles */
+
+/* Mobile-first approach */
+@media (max-width: 767px) {
+  /* Force mobile layout immediately */
+  .dash-v4 {
+    padding: 12px !important;
+    gap: 12px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  /* Stats grid - 2x2 on mobile, 1 column on very small screens */
+  .dash-v4-stats {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  /* Individual stat cards */
+  .dash-v4-stat {
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    min-height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .dash-v4-stat__label {
+    font-size: 10px !important;
+    margin-bottom: 6px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+  }
+  
+  .dash-v4-stat__row {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 4px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .dash-v4-stat__num {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+  }
+  
+  .dash-v4-stat__num--xl {
+    font-size: 24px !important;
+  }
+  
+  .dash-v4-stat__unit {
+    font-size: 11px !important;
+    opacity: 0.7 !important;
+  }
+  
+  .dash-v4-stat__trend {
+    font-size: 9px !important;
+    margin-top: 4px !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .dash-v4-stat__bar {
+    height: 3px !important;
+    background: rgba(255,255,255,0.1) !important;
+    border-radius: 2px !important;
+    overflow: hidden !important;
+    margin-top: auto !important;
+  }
+  
+  .dash-v4-stat__fill {
+    height: 100% !important;
+    border-radius: 2px !important;
+    transition: width 1s ease !important;
+  }
+  
+  /* Cards */
+  .dash-v4-card {
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .dash-v4-card__header {
+    margin-bottom: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  
+  .dash-v4-card__title {
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+  }
+  
+  /* Practice section */
+  .dash-v4-practice {
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .dash-v4-practice__stats {
+    display: flex !important;
+    justify-content: space-around !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .dash-v4-practice__stat {
+    text-align: center !important;
+    flex: 1 !important;
+  }
+  
+  .dash-v4-practice__val {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    display: block !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .dash-v4-practice__lbl {
+    font-size: 10px !important;
+    opacity: 0.7 !important;
+  }
+  
+  .dash-v4-practice__cta {
+    display: block !important;
+    width: 100% !important;
+    padding: 10px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .dash-v4-practice__cta-hint {
+    font-size: 10px !important;
+    opacity: 0.6 !important;
+    text-align: center !important;
+    line-height: 1.3 !important;
+  }
+  
+  /* Streak section - simplified mobile layout */
+  .dash-v4-streak__mobile {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  
+  .dash-v4-streak__current {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    background: rgba(255,255,255,0.05) !important;
+    border-radius: 8px !important;
+  }
+  
+  .dash-v4-streak__flame {
+    font-size: 24px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  .dash-v4-streak__info {
+    flex: 1 !important;
+  }
+  
+  .dash-v4-streak__val {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    display: block !important;
+    line-height: 1 !important;
+  }
+  
+  .dash-v4-streak__lbl {
+    font-size: 11px !important;
+    opacity: 0.7 !important;
+  }
+  
+  .dash-v4-streak__best-mobile {
+    font-size: 11px !important;
+    opacity: 0.7 !important;
+  }
+  
+  .dash-v4-streak__best-val {
+    font-weight: 600 !important;
+    opacity: 1 !important;
+  }
+  
+  .dash-v4-streak__milestones {
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: center !important;
+  }
+  
+  .streak-milestone {
+    flex: 1 !important;
+    padding: 6px 8px !important;
+    font-size: 10px !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+    background: rgba(255,255,255,0.05) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+  }
+  
+  .streak-milestone-icon {
+    display: block !important;
+    font-size: 14px !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .streak-milestone-label {
+    font-size: 9px !important;
+    opacity: 0.8 !important;
+  }
+  
+  /* Tables */
+  .mobile-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: 8px !important;
+    background: rgba(255,255,255,0.02) !important;
+  }
+  
+  .mobile-table {
+    width: 100% !important;
+    min-width: 300px !important;
+    font-size: 11px !important;
+    border-collapse: collapse !important;
+  }
+  
+  .mobile-table th {
+    padding: 8px 12px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    background: rgba(255,255,255,0.05) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+  }
+  
+  .mobile-table td {
+    padding: 8px 12px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Hide elements on mobile */
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  .dash-v4-twocol {
+    display: none !important;
+  }
+  
+  #rankSection {
+    display: none !important;
+  }
+  
+  /* Navigation */
+  .topbar-nav {
+    display: none !important;
+  }
+  
+  .topbar-hamburger {
+    display: flex !important;
+    width: 44px !important;
+    height: 44px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Animations - reduce for mobile performance */
+  .dash-v4-anim {
+    animation-duration: 0.2s !important;
+  }
+  
+  /* Remove hover effects on mobile */
+  .dash-v4-stat:hover,
+  .dash-v4-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .dash-v4 {
+    padding: 8px !important;
+    gap: 8px !important;
+  }
+  
+  .dash-v4-stats {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+  
+  .dash-v4-stat {
+    padding: 10px 12px !important;
+  }
+  
+  .dash-v4-stat__num {
+    font-size: 18px !important;
+  }
+  
+  .dash-v4-stat__num--xl {
+    font-size: 22px !important;
+  }
+  
+  .dash-v4-card {
+    padding: 10px 12px !important;
+  }
+  
+  .dash-v4-practice {
+    padding: 10px 12px !important;
+  }
+  
+  .dash-v4-practice__stats {
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+  
+  .dash-v4-streak__current {
+    padding: 8px !important;
+    gap: 8px !important;
+  }
+  
+  .dash-v4-streak__milestones {
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+  
+  .mobile-table {
+    font-size: 10px !important;
+  }
+  
+  .mobile-table th,
+  .mobile-table td {
+    padding: 6px 8px !important;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 767px) and (orientation: landscape) {
+  .dash-v4 {
+    padding: 8px !important;
+  }
+  
+  .dash-v4-stats {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+  }
+  
+  .dash-v4-stat {
+    padding: 8px 12px !important;
+  }
+  
+  .dash-v4-stat__label {
+    font-size: 9px !important;
+  }
+  
+  .dash-v4-stat__num {
+    font-size: 16px !important;
+  }
+  
+  .dash-v4-stat__num--xl {
+    font-size: 18px !important;
+  }
+}

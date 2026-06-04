@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Logging out…</title>
+  <style>
+    body { background:#0B0F14;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:Inter,system-ui,Arial; }
+    .card { text-align:center;max-width:560px;padding:24px; }
+    a.btn { display:inline-block;margin-top:14px;padding:10px 14px;background:#ffa116;color:#081018;border-radius:8px;text-decoration:none;font-weight:600; }
+    p { color:#9ca3af; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Logging you out…</h2>
+    <p id="msg">Syncing logout with VS Code extension.</p>
+    <a id="openBtn" class="btn" href="vscode://preecode.preecode/auth?action=logout">Open VS Code</a>
+  </div>
+
+  <script>
+    (function () {
+      var token = null;
+      try {
+        token = localStorage.getItem('token');
+      } catch (e) {
+        token = null;
+      }
+
+      var API_BASE = (function resolveApiBase() {
+        if (typeof window !== 'undefined' && window.PREECODE_CONFIG && window.PREECODE_CONFIG.BACKEND_URL) {
+          return String(window.PREECODE_CONFIG.BACKEND_URL).replace(/\/$/, '') + '/api';
+        }
+        if (typeof window !== 'undefined') {
+          var host = window.location.hostname;
+          if (host === 'localhost' || host === '127.0.0.1') {
+            return 'http://localhost:5001/api';
+          }
+        }
+        return 'https://preecode-backend.onrender.com/api';
+      })();
+
+      try {
+        if (token) {
+          fetch(API_BASE + '/users/logout', {
+            method: 'POST',
+            headers: { Authorization: 'Bearer ' + token },
+            credentials: 'include',
+            keepalive: true
+          }).catch(function () { /* ignore */ });
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      try {
+        localStorage.removeItem('token');
+        localStorage.removeItem('preecode_uid');
+        localStorage.removeItem('preecode_name');
+        localStorage.removeItem('preecode_plan');
+        localStorage.removeItem('preecode_badge');
+        localStorage.removeItem('preecode_shared');
+        localStorage.removeItem('preecode_new');
+      } catch (e) {
+        // ignore
+      }
+
+      var deep = 'vscode://preecode.preecode/auth?action=logout';
+
+      function fireDeepLink() {
+        try {
+          var frame = document.createElement('iframe');
+          frame.style.display = 'none';
+          frame.src = deep;
+          document.body.appendChild(frame);
+          setTimeout(function () {
+            try { document.body.removeChild(frame); } catch (e) { /* ignore */ }
+          }, 500);
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      fireDeepLink();
+      setTimeout(fireDeepLink, 250);
+      setTimeout(function () {
+        try { window.location.replace(deep); } catch (e) { /* ignore */ }
+      }, 500);
+
+      setTimeout(function () {
+        window.location.replace('/index.html');
+      }, 1400);
+    })();
+  </script>
+</body>
+</html>

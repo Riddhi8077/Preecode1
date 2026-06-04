@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Preecode – Interview Session</title>
+  <script src="/theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/tailwind-config.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/mobile-enhancements.js" defer></script>
+  <style>
+    .record-btn { width:96px; height:96px; border-radius:50%; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .15s; }
+    .record-btn:hover { transform:scale(1.05); }
+    .record-btn.idle { background:var(--accent,#6366f1); }
+    .record-btn.recording { background:#ef4444; animation:pulse-ring 1.2s ease-out infinite; }
+    @keyframes pulse-ring {
+      0%   { box-shadow:0 0 0 0 rgba(239,68,68,.6); }
+      70%  { box-shadow:0 0 0 18px rgba(239,68,68,0); }
+      100% { box-shadow:0 0 0 0 rgba(239,68,68,0); }
+    }
+    .hint-body { display:none; }
+    .hint-body.open { display:block; }
+    .progress-bar-fill { transition:width .4s ease; }
+    .toast { position:fixed; bottom:24px; right:24px; z-index:9999; padding:12px 20px; border-radius:10px; font-size:.85rem; font-weight:500; opacity:0; transform:translateY(8px); transition:all .25s; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    .toast.success { background:#16a34a; color:#fff; }
+    .toast.error   { background:#dc2626; color:#fff; }
+  </style>
+</head>
+<body class="bg-th-bg text-txt font-sans min-h-screen text-sm antialiased">
+
+  <div class="app-shell min-h-screen relative z-10">
+    <div class="app-main flex-1 flex flex-col">
+      <div class="page-content flex-1 p-4 md:p-7 max-w-[1200px] w-full mx-auto opacity-0 animate-fade-in">
+
+        <!-- Error banner -->
+        <div id="errorBanner" class="hidden mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm"></div>
+
+        <!-- Loading state -->
+        <div id="loadingState" class="dash-v4-card text-center py-12">
+          <svg class="w-8 h-8 animate-spin mx-auto text-accent mb-3" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+          </svg>
+          <p class="text-txt-muted">Loading interview…</p>
+        </div>
+
+        <!-- Session layout (hidden until loaded) -->
+        <div id="sessionLayout" class="hidden">
+
+          <!-- Progress bar -->
+          <div class="mb-4">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs text-txt-muted" id="progressLabel">Question 1 / 5</span>
+              <span class="text-xs text-txt-muted" id="progressPct">0%</span>
+            </div>
+            <div class="w-full h-1.5 bg-th-surface rounded-full overflow-hidden">
+              <div class="progress-bar-fill h-full bg-accent rounded-full" id="progressFill" style="width:0%"></div>
+            </div>
+          </div>
+
+          <!-- Two-column layout -->
+          <div class="flex flex-col md:flex-row gap-4">
+
+            <!-- Left: Question panel -->
+            <div class="dash-v4-card flex-1">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="dash-section-badge" id="questionBadge">Q1</span>
+                <span class="dash-v4-card__title">Question</span>
+              </div>
+              <p class="text-txt leading-relaxed text-base" id="questionText">Loading…</p>
+
+              <!-- Hints -->
+              <div class="mt-4 border-t border-th-border pt-3">
+                <button class="text-xs text-txt-muted flex items-center gap-1 hover:text-txt transition-colors" id="hintToggle">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                  Show hint
+                </button>
+                <div class="hint-body mt-2 text-xs text-txt-muted leading-relaxed" id="hintBody"></div>
+              </div>
+            </div>
+
+            <!-- Right: Recording panel -->
+            <div class="dash-v4-card flex flex-col items-center justify-center gap-5 min-w-[220px]">
+              <p class="text-xs text-txt-muted uppercase tracking-wider font-medium" id="recordStatus">Ready to record</p>
+
+              <!-- Record button -->
+              <button class="record-btn idle" id="recordBtn" title="Start recording">
+                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 1a4 4 0 014 4v6a4 4 0 01-8 0V5a4 4 0 014-4zm0 2a2 2 0 00-2 2v6a2 2 0 004 0V5a2 2 0 00-2-2zm-7 9a7 7 0 0014 0h2a9 9 0 01-8 8.94V23h-2v-2.06A9 9 0 013 12H5z"/>
+                </svg>
+              </button>
+
+              <!-- Timer -->
+              <span class="text-2xl font-mono font-semibold text-txt" id="timerDisplay">00:00</span>
+
+              <!-- Submit -->
+              <button id="submitBtn" disabled class="dash-v4-practice__cta w-full flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                <span id="submitBtnText">Submit Answer</span>
+                <svg id="submitSpinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/api.js"></script>
+  <script src="/layout/layout.js"></script>
+  <script src="/layout/chatbot.js"></script>
+  <script src="/layout/early-access.js"></script>
+  <script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const interviewId = params.get('id');
+    if (!interviewId) { showError('No interview ID found.'); return; }
+
+    const token = localStorage.getItem('token');
+
+    // State
+    let currentQuestion = null;
+    let questionNumber  = 1;
+    let totalQuestions  = 5;
+    let mediaRecorder   = null;
+    let audioChunks     = [];
+    let timerInterval   = null;
+    let elapsedSeconds  = 0;
+    let isRecording     = false;
+    let recordedBlob    = null;
+
+    // Load first question from session storage (set by setup page via redirect)
+    const stored = sessionStorage.getItem('interview_' + interviewId);
+    if (stored) {
+      try {
+        const data = JSON.parse(stored);
+        currentQuestion = data.firstQuestion;
+        totalQuestions  = data.totalQuestions || 5;
+        questionNumber  = 1;
+        renderQuestion();
+      } catch (_) { fetchFallback(); }
+    } else {
+      fetchFallback();
+    }
+
+    function fetchFallback() {
+      // If no session data, show error (user should come from setup page)
+      showError('Session expired. Please start a new interview.');
+    }
+
+    function renderQuestion() {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('sessionLayout').classList.remove('hidden');
+      document.getElementById('questionText').textContent = currentQuestion.question || currentQuestion;
+      document.getElementById('questionBadge').textContent = 'Q' + questionNumber;
+      document.getElementById('progressLabel').textContent = 'Question ' + questionNumber + ' / ' + totalQuestions;
+      const pct = Math.round(((questionNumber - 1) / totalQuestions) * 100);
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressPct').textContent = pct + '%';
+
+      // Hint
+      const keywords = currentQuestion.expectedKeywords || [];
+      document.getElementById('hintBody').textContent = keywords.length
+        ? 'Keywords to consider: ' + keywords.join(', ')
+        : 'Think about your past experience and be specific.';
+
+      // Reset recording state
+      resetRecording();
+    }
+
+    // ── Hint toggle ──
+    document.getElementById('hintToggle').addEventListener('click', function () {
+      const body = document.getElementById('hintBody');
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      this.querySelector('span') && (this.querySelector('span').textContent = isOpen ? 'Show hint' : 'Hide hint');
+      this.childNodes.forEach(n => { if (n.nodeType === 3) n.textContent = isOpen ? ' Show hint' : ' Hide hint'; });
+    });
+
+    // ── Recording ──
+    document.getElementById('recordBtn').addEventListener('click', async function () {
+      if (!isRecording) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+          mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+          mediaRecorder.onstop = () => {
+            recordedBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            enableSubmit();
+          };
+          mediaRecorder.start();
+          isRecording = true;
+          this.classList.remove('idle');
+          this.classList.add('recording');
+          document.getElementById('recordStatus').textContent = 'Recording…';
+          startTimer();
+        } catch (err) {
+          showError('Microphone access denied. Please allow microphone access.');
+        }
+      } else {
+        stopRecording();
+      }
+    });
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(t => t.stop());
+      }
+      isRecording = false;
+      clearInterval(timerInterval);
+      const btn = document.getElementById('recordBtn');
+      btn.classList.remove('recording');
+      btn.classList.add('idle');
+      document.getElementById('recordStatus').textContent = 'Recording complete';
+    }
+
+    function enableSubmit() {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+
+    function resetRecording() {
+      recordedBlob = null;
+      isRecording = false;
+      audioChunks = [];
+      elapsedSeconds = 0;
+      clearInterval(timerInterval);
+      document.getElementById('timerDisplay').textContent = '00:00';
+      document.getElementById('recordStatus').textContent = 'Ready to record';
+      const btn = document.getElementById('recordBtn');
+      btn.classList.remove('recording');
+      btn.classList.add('idle');
+      const sub = document.getElementById('submitBtn');
+      sub.disabled = true;
+      sub.classList.add('opacity-50', 'cursor-not-allowed');
+    }
+
+    function startTimer() {
+      elapsedSeconds = 0;
+      timerInterval = setInterval(() => {
+        elapsedSeconds++;
+        const m = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+        const s = String(elapsedSeconds % 60).padStart(2, '0');
+        document.getElementById('timerDisplay').textContent = m + ':' + s;
+      }, 1000);
+    }
+
+    // ── Submit answer ──
+    document.getElementById('submitBtn').addEventListener('click', async function () {
+      if (!recordedBlob) return;
+      if (isRecording) stopRecording();
+
+      this.disabled = true;
+      document.getElementById('submitBtnText').textContent = 'Submitting…';
+      document.getElementById('submitSpinner').classList.remove('hidden');
+
+      try {
+        // Convert blob to base64
+        const audioBase64 = await blobToBase64(recordedBlob);
+
+        const res = await fetch(API_BASE + '/v2/interview/answer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+          body: JSON.stringify({
+            interviewId,
+            questionText: currentQuestion.question || currentQuestion,
+            audioBase64,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) { showError(data.error || 'Failed to submit answer.'); return; }
+
+        showToast(data.feedback ? data.feedback.slice(0, 120) + '…' : 'Answer submitted!', 'success');
+
+        if (data.sessionComplete) {
+          setTimeout(() => {
+            window.location.href = '/pages/interview-results.html?id=' + interviewId;
+          }, 1800);
+        } else {
+          currentQuestion = data.nextQuestion;
+          questionNumber  = data.questionNumber;
+          setTimeout(renderQuestion, 1800);
+        }
+      } catch (err) {
+        showError('Network error. Please try again.');
+      } finally {
+        document.getElementById('submitBtnText').textContent = 'Submit Answer';
+        document.getElementById('submitSpinner').classList.add('hidden');
+      }
+    });
+
+    function blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function showError(msg) {
+      const b = document.getElementById('errorBanner');
+      b.textContent = msg;
+      b.classList.remove('hidden');
+      document.getElementById('loadingState').classList.add('hidden');
+    }
+
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast ' + type;
+      requestAnimationFrame(() => t.classList.add('show'));
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+  })();
+  </script>
+  <script src="/pages/mobile-app-enhancements.js" defer></script>
+</body>
+</html>

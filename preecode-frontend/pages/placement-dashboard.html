@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Preecode – Placement Dashboard</title>
+  <script src="/theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/tailwind-config.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/mobile-enhancements.js" defer></script>
+  <style>
+    .readiness-bar-track { height:12px; border-radius:999px; background:var(--th-surface); overflow:hidden; }
+    .readiness-bar-fill  { height:100%; border-radius:999px; transition:width .8s ease; }
+    .readiness-red    { color:#f87171; }
+    .readiness-amber  { color:#fbbf24; }
+    .readiness-green  { color:#4ade80; }
+    .skeleton-row { height:40px; border-radius:8px; background:var(--th-surface); animation:pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+  </style>
+</head>
+<body class="bg-th-bg text-txt font-sans min-h-screen text-sm antialiased">
+
+  <div class="app-shell min-h-screen relative z-10">
+    <div class="app-main flex-1 flex flex-col">
+      <div class="page-content flex-1 p-4 md:p-7 max-w-[1200px] w-full mx-auto opacity-0 animate-fade-in">
+
+        <!-- Error -->
+        <div id="errorBanner" class="hidden mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm"></div>
+
+        <!-- Header -->
+        <div class="mb-6">
+          <h1 class="text-xl font-semibold text-txt">Placement Dashboard</h1>
+          <p class="text-txt-muted mt-1">Your end-to-end placement readiness at a glance.</p>
+        </div>
+
+        <!-- Skeleton -->
+        <div id="skeleton" class="space-y-4">
+          <div class="dash-v4-stats" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+            <div class="dash-v4-stat h-28 animate-pulse bg-th-surface"></div>
+            <div class="dash-v4-stat h-28 animate-pulse bg-th-surface"></div>
+            <div class="dash-v4-stat h-28 animate-pulse bg-th-surface"></div>
+            <div class="dash-v4-stat h-28 animate-pulse bg-th-surface"></div>
+          </div>
+          <div class="dash-v4-card h-32 animate-pulse bg-th-surface"></div>
+          <div class="dash-v4-card h-48 animate-pulse bg-th-surface"></div>
+        </div>
+
+        <!-- Dashboard content -->
+        <div id="dashContent" class="hidden space-y-5">
+
+          <!-- Metric cards -->
+          <div class="dash-v4-stats" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+            <div class="dash-v4-stat dash-v4-stat--primary tint-blue">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Placement Readiness</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num dash-v4-stat__num--xl" id="readinessPct">0</span>
+                <span class="dash-v4-stat__unit">%</span>
+              </div>
+              <div class="dash-v4-stat__bar"><div class="dash-v4-stat__fill" id="readinessBar"></div></div>
+            </div>
+            <div class="dash-v4-stat tint-green">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Problems Solved</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="problemsSolved">0</span>
+              </div>
+              <div class="dash-v4-stat__trend neutral" id="diffBreakdown"><span>—</span></div>
+            </div>
+            <div class="dash-v4-stat tint-purple">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Best Interview Score</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="bestInterview">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+            </div>
+            <div class="dash-v4-stat tint-orange">
+              <div class="dash-v4-stat__accent"></div>
+              <p class="dash-v4-stat__label">Resume Score</p>
+              <div class="dash-v4-stat__row">
+                <span class="dash-v4-stat__num" id="resumeScore">0</span>
+                <span class="dash-v4-stat__unit">/ 100</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Readiness bar + improvement plan -->
+          <div class="dash-v4-card">
+            <div class="dash-v4-card__header mb-3">
+              <span class="dash-v4-card__title">Readiness Breakdown</span>
+            </div>
+            <div class="readiness-bar-track mb-2">
+              <div class="readiness-bar-fill bg-accent" id="readinessBarFull" style="width:0%"></div>
+            </div>
+            <p class="text-xs text-txt-muted mb-4" id="readinessLabel">0% — Keep going!</p>
+
+            <p class="text-xs font-semibold text-txt-muted uppercase tracking-wider mb-2">Improvement Plan</p>
+            <ul class="space-y-2" id="improvementList"></ul>
+          </div>
+
+          <!-- Tables row -->
+          <div class="flex flex-col md:flex-row gap-4">
+
+            <!-- Recent Interviews -->
+            <div class="dash-v4-card flex-1">
+              <div class="dash-v4-card__header mb-3">
+                <span class="dash-v4-card__title">Recent Interviews</span>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="dash-v4-table w-full" style="min-width:360px">
+                  <thead>
+                    <tr>
+                      <th>Date</th><th>Role</th><th>Difficulty</th><th>Score</th><th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="interviewsBody">
+                    <tr><td colspan="5" class="text-center text-txt-muted py-4">No interviews yet</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Recent Resumes -->
+            <div class="dash-v4-card flex-1">
+              <div class="dash-v4-card__header mb-3">
+                <span class="dash-v4-card__title">Recent Resumes</span>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="dash-v4-table w-full" style="min-width:320px">
+                  <thead>
+                    <tr>
+                      <th>Date</th><th>File</th><th>ATS</th><th>Match</th><th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="resumesBody">
+                    <tr><td colspan="5" class="text-center text-txt-muted py-4">No resumes yet</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/api.js"></script>
+  <script src="/layout/layout.js"></script>
+  <script src="/layout/chatbot.js"></script>
+  <script src="/layout/early-access.js"></script>
+  <script>
+  (function () {
+    const token  = localStorage.getItem('token');
+    const userId = localStorage.getItem('preecode_uid');
+    if (!userId) { showError('User not found. Please log in again.'); return; }
+
+    // Load readiness
+    fetch(API_BASE + '/v2/readiness/' + userId, {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('skeleton').classList.add('hidden');
+      document.getElementById('dashContent').classList.remove('hidden');
+
+      const pct = data.readinessPercent || 0;
+      const readinessEl = document.getElementById('readinessPct');
+      readinessEl.textContent = pct;
+      readinessEl.className = 'dash-v4-stat__num dash-v4-stat__num--xl ' +
+        (pct < 40 ? 'readiness-red' : pct < 70 ? 'readiness-amber' : 'readiness-green');
+
+      document.getElementById('readinessBar').style.width = pct + '%';
+      document.getElementById('readinessBarFull').style.width = pct + '%';
+      document.getElementById('readinessLabel').textContent =
+        pct + '% — ' + (pct < 40 ? 'Keep going!' : pct < 70 ? 'Good progress!' : 'Placement ready!');
+
+      document.getElementById('problemsSolved').textContent = data.breakdown?.totalSolved || 0;
+      document.getElementById('diffBreakdown').innerHTML =
+        `<span>E:${data.breakdown?.easySolved||0} M:${data.breakdown?.mediumSolved||0} H:${data.breakdown?.hardSolved||0}</span>`;
+      document.getElementById('bestInterview').textContent = data.interviewScore || 0;
+      document.getElementById('resumeScore').textContent   = data.resumeScore || 0;
+
+      // Improvement plan
+      const planEl = document.getElementById('improvementList');
+      planEl.innerHTML = '';
+      (data.improvementPlan || []).forEach((tip, i) => {
+        const li = document.createElement('li');
+        li.className = 'flex gap-3 text-sm text-txt leading-relaxed';
+        li.innerHTML = `<span class="flex-shrink-0 w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-semibold">${i+1}</span><span>${tip}</span>`;
+        planEl.appendChild(li);
+      });
+    })
+    .catch(() => showError('Failed to load readiness data.'));
+
+    // Load interview history
+    fetch(API_BASE + '/v2/interview/history/' + userId, {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    .then(r => r.json())
+    .then(interviews => {
+      if (!Array.isArray(interviews) || !interviews.length) return;
+      const tbody = document.getElementById('interviewsBody');
+      tbody.innerHTML = '';
+      interviews.slice(0, 5).forEach(iv => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${new Date(iv.createdAt).toLocaleDateString()}</td>
+          <td>${iv.role}</td>
+          <td>${iv.difficulty}</td>
+          <td>${iv.overallScore}</td>
+          <td><a href="/pages/interview-results.html?id=${iv._id}" class="text-accent hover:underline text-xs">View</a></td>`;
+        tbody.appendChild(tr);
+      });
+    }).catch(() => {});
+
+    // Load resume list
+    fetch(API_BASE + '/v2/resume/list/' + userId, {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    .then(r => r.json())
+    .then(resumes => {
+      if (!Array.isArray(resumes) || !resumes.length) return;
+      const tbody = document.getElementById('resumesBody');
+      tbody.innerHTML = '';
+      resumes.slice(0, 5).forEach(rv => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${new Date(rv.uploadedAt).toLocaleDateString()}</td>
+          <td class="max-w-[120px] truncate" title="${rv.fileName}">${rv.fileName}</td>
+          <td>${rv.atsScore}</td>
+          <td>—</td>
+          <td><a href="/pages/resume-analysis.html?id=${rv._id}" class="text-accent hover:underline text-xs">View</a></td>`;
+        tbody.appendChild(tr);
+      });
+    }).catch(() => {});
+
+    function showError(msg) {
+      document.getElementById('skeleton').classList.add('hidden');
+      const b = document.getElementById('errorBanner');
+      b.textContent = msg;
+      b.classList.remove('hidden');
+    }
+  })();
+  </script>
+</body>
+</html>

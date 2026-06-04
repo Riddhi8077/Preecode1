@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src {{cspSource}} https: data:; style-src {{cspSource}} https: 'unsafe-inline'; script-src 'nonce-{{nonce}}';" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{styleUri}}" />
+  <title>Preecode AI</title>
+</head>
+<body>
+  <div class="app" id="app">
+    <section class="screen active" data-screen="1" id="screen1">
+      <div class="profile-card" id="profileCard">
+        <div class="profile-main">
+          <div class="avatar" aria-hidden="true">PC</div>
+          <div>
+            <div class="profile-title" id="profileTitle">User's Preecode AI</div>
+            <div class="profile-sub">Account and workspace assistant</div>
+          </div>
+        </div>
+        <div class="profile-menu" id="profileMenu">
+          <button class="menu-btn" id="openDashboardBtn">Open Dashboard</button>
+        </div>
+      </div>
+
+      <div class="status-strip">
+        <span class="status-item">File: <strong id="fileName">No file</strong></span>
+        <span class="status-item">Lang: <strong id="fileLanguage">-</strong></span>
+        <span class="status-item">State: <strong id="monitorState">Idle</strong></span>
+        <span class="status-item">Diag: <strong id="monitorDiagnostics">E:0 W:0</strong></span>
+      </div>
+
+      <div class="screen1-header">
+        <button class="icon-btn page-toggle" id="showOptionsBtn" aria-label="Show options">→</button>
+      </div>
+
+      <div class="first-options" id="firstOptions">
+        <button class="secondary-btn" id="openToolsScreenBtn">Code Tools</button>
+        <button class="secondary-btn" id="openPracticeScreenBtn">Practice Session</button>
+        <button class="secondary-btn" id="openSolutionScreenBtn">Solution Workspace</button>
+      </div>
+
+      <div class="chat-title">Conversation</div>
+      <div class="chat-feed" id="chatFeed">
+        <div class="chat-bubble ai">Ask anything about coding, debugging, or how to use Preecode.</div>
+      </div>
+      <div class="hidden-data" aria-hidden="true">
+        <span id="monitorSelection">No selection</span>
+        <span id="monitorVisibleRange">-</span>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="2" id="screen2">
+      <button class="icon-btn back-to-chat" id="backToChatFromTools" aria-label="Back to chatbot">← Chatbot</button>
+
+      <div class="profile-card slim">
+        <div class="profile-main">
+          <div class="avatar" aria-hidden="true">PC</div>
+          <div class="profile-title" id="menuProfileTitle">User's Preecode AI</div>
+        </div>
+        <button class="icon-btn" id="toggleTools" aria-label="Toggle tools">Tools</button>
+      </div>
+
+      <div class="tools-panel" id="toolsPanel">
+        <button class="action-btn" data-action="debug">Debug Code</button>
+        <button class="action-btn" data-action="fix">Fix Code</button>
+        <button class="action-btn" data-action="explain">Explain Code</button>
+        <button class="action-btn" data-action="find_bugs">Review Code</button>
+      </div>
+
+      <div class="panel-card" id="topIssueCard">
+        <div class="panel-title">Detected Issue</div>
+        <div class="panel-body" id="monitorTopIssue">No issue detected</div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-title">Suggested Fix</div>
+        <div class="panel-body" id="expectedFixOutput">No automatic replacement found.</div>
+      </div>
+
+      <button class="primary-btn" id="gotoPracticeBtn">Open Practice Workspace</button>
+    </section>
+
+    <section class="screen" data-screen="3" id="screen3">
+      <button class="icon-btn back-to-chat" id="backToChatFromPractice" aria-label="Back to chatbot">← Chatbot</button>
+
+      <div class="section-head">Practice Session</div>
+      <div class="meta-row">
+        <div class="timer" id="timer">00:00</div>
+        <div class="typing" id="typingIndicator">Typing...</div>
+      </div>
+
+      <button class="primary-btn" id="generateQuestionBtn">Generate Question</button>
+      <button class="secondary-btn" id="detectQuestionBtn">Detect Question In File</button>
+      <button class="secondary-btn" id="gotoSolutionScreenBtn">Open Solution Workspace</button>
+    </section>
+
+    <section class="screen" data-screen="4" id="screen4">
+      <button class="icon-btn back-to-chat" id="backToChatFromSolution" aria-label="Back to chatbot">← Chatbot</button>
+
+      <div class="section-head">Solution Workspace</div>
+      <div class="meta-row split">
+        <div class="timer-box">Time: <span id="timeDisplay">00:00</span></div>
+        <div class="rating-box">Rating: <span id="solutionRating">-</span>/10</div>
+      </div>
+
+      <div class="panel-card compact">
+        <div class="panel-title">Current Question</div>
+        <div class="panel-body" id="problemOutput">Question available on screen.</div>
+      </div>
+
+      <button class="secondary-btn" id="explainQuestionBtn">Explain Question</button>
+      <div class="dual-btn">
+        <button class="secondary-btn" id="showHintBtn">Show Hint</button>
+        <button class="secondary-btn" id="showSolutionBtn">Show Solution</button>
+      </div>
+      <div class="dual-btn">
+        <button class="secondary-btn" id="explainSolutionBtn">Explain Solution</button>
+        <button class="secondary-btn" id="evaluateSolutionBtn">Evaluate Solution</button>
+      </div>
+      <button class="secondary-btn" id="anotherWayBtn">Alternative Approach</button>
+
+      <div class="hidden-data" aria-hidden="true">
+        <span id="reasonOutput">-</span>
+        <span id="issueHighlightOutput">-</span>
+        <span id="stepsOutput">-</span>
+        <span id="lineExecutionOutput">-</span>
+        <span id="fixedCodeOutput">-</span>
+        <span id="suggestionsOutput">-</span>
+      </div>
+    </section>
+
+    <section class="popup" id="helpPopup" aria-live="polite">
+      <div class="popup-text">Take help with Preecode AI?</div>
+      <div class="popup-actions">
+        <button class="popup-btn" id="helpYes">Yes</button>
+        <button class="popup-btn secondary" id="helpLater">Later</button>
+      </div>
+    </section>
+
+    <section class="ask-bar">
+      <input id="askInput" type="text" placeholder="Ask Preecode AI anything..." />
+      <button id="askSendBtn">Ask AI</button>
+    </section>
+
+    <span class="hidden-data" id="userName" aria-hidden="true">User</span>
+  </div>
+
+  <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+</body>
+</html>

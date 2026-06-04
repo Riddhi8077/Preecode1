@@ -1,0 +1,16 @@
+.git/**
+.vscode/**
+.vscode-test/**
+src/**
+.env
+.DS_Store
+.gitignore
+.yarnrc
+vsc-extension-quickstart.md
+**/tsconfig.json
+**/eslint.config.mjs
+**/*.map
+**/*.ts
+**/.vscode-test.*
+preecode-backend/**
+preecode-frontend/**

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Preecode – Start Mock Interview</title>
+  <script src="/theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/tailwind-config.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/mobile-enhancements.js" defer></script>
+</head>
+<body class="bg-th-bg text-txt font-sans min-h-screen text-sm antialiased">
+
+  <div class="app-shell min-h-screen relative z-10">
+    <div class="app-main flex-1 flex flex-col">
+      <div class="page-content flex-1 p-4 md:p-7 max-w-[1200px] w-full mx-auto opacity-0 animate-fade-in">
+
+        <!-- Page header -->
+        <div class="mb-6">
+          <h1 class="text-xl font-semibold text-txt">Mock Interview</h1>
+          <p class="text-txt-muted mt-1">Configure your session and let AI generate personalised questions.</p>
+        </div>
+
+        <!-- Setup card -->
+        <div class="dash-v4-card max-w-lg mx-auto">
+          <div class="dash-v4-card__header">
+            <span class="dash-v4-card__title">Start Mock Interview</span>
+          </div>
+
+          <!-- Error banner -->
+          <div id="errorBanner" class="hidden mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm"></div>
+
+          <form id="setupForm" class="flex flex-col gap-4 mt-2">
+
+            <!-- Role -->
+            <div>
+              <label class="block text-xs font-medium text-txt-muted mb-1.5">Select Role</label>
+              <select id="roleSelect" class="w-full bg-th-surface border border-th-border rounded-lg px-3 py-2.5 text-txt text-sm focus:outline-none focus:ring-2 focus:ring-accent/50">
+                <option value="">— Choose a role —</option>
+                <option value="Frontend Developer">Frontend Developer</option>
+                <option value="Backend Developer">Backend Developer</option>
+                <option value="Full Stack Developer">Full Stack Developer</option>
+                <option value="SDE">SDE</option>
+                <option value="AI/ML Engineer">AI/ML Engineer</option>
+              </select>
+            </div>
+
+            <!-- Difficulty -->
+            <div>
+              <label class="block text-xs font-medium text-txt-muted mb-1.5">Select Difficulty</label>
+              <select id="difficultySelect" class="w-full bg-th-surface border border-th-border rounded-lg px-3 py-2.5 text-txt text-sm focus:outline-none focus:ring-2 focus:ring-accent/50">
+                <option value="">— Choose difficulty —</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </div>
+
+            <!-- Resume personalisation -->
+            <label class="flex items-center gap-3 cursor-pointer select-none">
+              <input type="checkbox" id="useResume" class="w-4 h-4 rounded accent-accent" />
+              <span class="text-sm text-txt">Personalise questions using my latest resume</span>
+            </label>
+
+            <!-- Submit -->
+            <button type="submit" id="startBtn" class="dash-v4-practice__cta mt-2 flex items-center justify-center gap-2">
+              <span id="startBtnText">Generate Questions &amp; Start</span>
+              <svg id="startSpinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+              </svg>
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/api.js"></script>
+  <script src="/layout/layout.js"></script>
+  <script src="/layout/chatbot.js"></script>
+  <script src="/layout/early-access.js"></script>
+  <script src="/js/interview.js"></script>
+  <script>
+    document.getElementById('setupForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const role       = document.getElementById('roleSelect').value;
+      const difficulty = document.getElementById('difficultySelect').value;
+      const useResume  = document.getElementById('useResume').checked;
+      const errorBanner = document.getElementById('errorBanner');
+      const startBtn   = document.getElementById('startBtn');
+      const startBtnText = document.getElementById('startBtnText');
+      const startSpinner = document.getElementById('startSpinner');
+
+      errorBanner.classList.add('hidden');
+
+      if (!role)       { showError('Please select a role.'); return; }
+      if (!difficulty) { showError('Please select a difficulty.'); return; }
+
+      startBtn.disabled = true;
+      startBtnText.textContent = 'Generating…';
+      startSpinner.classList.remove('hidden');
+
+      try {
+        const token  = localStorage.getItem('token');
+        const userId = localStorage.getItem('preecode_uid');
+
+        // Optionally fetch latest resumeId
+        let resumeId = window.__prefilledResumeId || null;
+        if (!resumeId && useResume) {
+          try {
+            const rRes = await fetch(API_BASE + '/v2/resume/list/' + userId, {
+              headers: { Authorization: 'Bearer ' + token }
+            });
+            if (rRes.ok) {
+              const resumes = await rRes.json();
+              if (resumes.length > 0) resumeId = resumes[0]._id;
+            }
+          } catch (_) {}
+        }
+
+        const body = { role, difficulty };
+        if (resumeId) body.resumeId = resumeId;
+
+        const res = await fetch(API_BASE + '/v2/interview/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+        if (!res.ok) { showError(data.error || 'Failed to start interview.'); return; }
+
+        // Store first question in sessionStorage for the session page
+        sessionStorage.setItem('interview_' + data.interviewId, JSON.stringify({
+          firstQuestion: data.firstQuestion,
+          totalQuestions: data.totalQuestions,
+        }));
+
+        window.location.href = '/pages/interview-session.html?id=' + data.interviewId;
+      } catch (err) {
+        showError('Network error. Please try again.');
+      } finally {
+        startBtn.disabled = false;
+        startBtnText.textContent = 'Generate Questions & Start';
+        startSpinner.classList.add('hidden');
+      }
+
+      function showError(msg) {
+        errorBanner.textContent = msg;
+        errorBanner.classList.remove('hidden');
+      }
+    });
+  </script>
+  <script src="/pages/mobile-app-enhancements.js" defer></script>
+</body>
+</html>

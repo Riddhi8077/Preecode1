@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#ff6b00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Privacy Policy — Preecode</title>
+  <meta name="description" content="Preecode Privacy Policy - Learn how we protect your data and respect your privacy.">
+  <script src="theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="tailwind-config.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-th-bg text-txt font-sans antialiased">
+
+  <!-- ════════════════════════════════════
+       NAVBAR
+  ════════════════════════════════════ -->
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-th-bg/80 border-b border-bdr">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+      <a href="/" class="brand-logo logo-nav"><span class="brand-dark">Pree</span><span class="brand-accent" style="color: #ff9500 !important;">code</span></a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="text-sm text-txt-sec hover:text-txt transition-colors no-underline">Home</a>
+        <a href="about.html" class="text-sm text-txt-sec hover:text-txt transition-colors no-underline">About</a>
+        <a href="login.html" class="text-sm text-txt-sec hover:text-txt transition-colors no-underline">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Start Free</a>
+      </div>
+
+      <button id="mobile-menu-btn" class="md:hidden text-txt-sec hover:text-txt bg-transparent border-none cursor-pointer">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-bdr px-6 py-4 space-y-3 bg-th-bg/95 backdrop-blur-xl">
+      <a href="index.html" class="block text-sm text-txt-sec hover:text-txt no-underline">Home</a>
+      <a href="about.html" class="block text-sm text-txt-sec hover:text-txt no-underline">About</a>
+      <a href="login.html" class="block text-sm text-txt-sec hover:text-txt no-underline">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm block w-full text-center">Start Free</a>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════
+       CONTENT
+  ════════════════════════════════════ -->
+  <section class="section" style="margin-top: 100px;">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="mb-12 reveal">
+        <h1 class="text-4xl md:text-5xl font-bold text-txt mb-4">Privacy Policy</h1>
+        <p class="text-txt-sec">Last updated: April 16, 2026</p>
+      </div>
+
+      <div class="prose prose-invert max-w-none space-y-8 reveal">
+        <div class="bg-th-surface border border-bdr rounded-lg p-6 mb-8">
+          <p class="text-txt-sec mb-3"><strong>Quick Summary:</strong> We don't collect your source code. We only track session metadata (problem name, language, difficulty, time spent) to help you track your development progress. Your privacy is our priority.</p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">1. Information We Collect</h2>
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">1.1 Account Information</h3>
+              <p class="text-txt-sec leading-relaxed">
+                When you create a Preecode account, we collect: email address, username, password (hashed and encrypted), and optional profile information like name and profile picture. This information is used to authenticate you and personalize your experience.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">1.2 Coding Session Data (Metadata Only)</h3>
+              <p class="text-txt-sec leading-relaxed mb-3">
+                When you use the VS Code extension to solve problems, we capture metadata ONLY:
+              </p>
+              <ul class="list-disc list-inside space-y-2 text-txt-sec ml-2">
+                <li>Problem/question name and ID</li>
+                <li>Programming language used</li>
+                <li>Difficulty level (Easy/Medium/Hard)</li>
+                <li>Time spent on the problem</li>
+                <li>Submission status (passed/failed/time limit exceeded)</li>
+                <li>Session start and end times</li>
+              </ul>
+              <p class="text-txt-sec leading-relaxed mt-3 font-semibold text-accent">
+                ⚠️ <strong>IMPORTANT:</strong> We NEVER collect, access, store, or transmit your actual source code. Your code remains entirely on your machine.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">1.3 Device and Technical Information</h3>
+              <p class="text-txt-sec leading-relaxed">
+                We automatically collect information about your device, operating system, VS Code version, and extension version to improve compatibility and diagnose issues.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">1.4 Third-Party Authentication</h3>
+              <p class="text-txt-sec leading-relaxed">
+                If you use Google OAuth to sign in, we receive your email and basic profile information from Google. We don't have access to your Google password or other Google account data.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">2. How We Use Your Information</h2>
+          <div class="space-y-4">
+            <ul class="list-disc list-inside space-y-3 text-txt-sec ml-2">
+              <li><strong>Service Delivery:</strong> To track your coding sessions, generate analytics dashboards, and provide AI code review suggestions</li>
+              <li><strong>Analytics & Insights:</strong> To analyze aggregated, anonymized patterns in coding behavior to improve the service</li>
+              <li><strong>AI Improvement:</strong> To train and improve our AI code review models using your session metadata (never your source code)</li>
+              <li><strong>Communication:</strong> To send you important updates, security alerts, and feature announcements</li>
+              <li><strong>Support:</strong> To provide customer support and resolve technical issues</li>
+              <li><strong>Compliance:</strong> To comply with legal obligations and enforce our Terms of Service</li>
+              <li><strong>Research:</strong> To conduct research on developer productivity and learning patterns (anonymized)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">3. Data Sharing & Third Parties</h2>
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">3.1 We Do NOT Sell Your Data</h3>
+              <p class="text-txt-sec leading-relaxed">
+                Preecode does not sell, rent, or trade your personal information to third parties for their marketing purposes. We respect your privacy.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">3.2 Third-Party Service Providers</h3>
+              <p class="text-txt-sec leading-relaxed mb-3">
+                We use trusted third-party services to operate Preecode. These providers have signed Data Processing Agreements and are only permitted to process data as needed to provide the service:
+              </p>
+              <ul class="list-disc list-inside space-y-2 text-txt-sec ml-2">
+                <li><strong>MongoDB (Data Storage):</strong> Stores your session data and account information (US-based, SOC 2 certified)</li>
+                <li><strong>Google (Authentication & OAuth):</strong> Handles secure login via Google accounts</li>
+                <li><strong>OpenRouter (AI Services):</strong> Processes your session metadata to generate code reviews and suggestions</li>
+                <li><strong>Cloudinary (Media Storage):</strong> Stores profile pictures and generated certificates</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">3.3 Legal Requirements</h3>
+              <p class="text-txt-sec leading-relaxed">
+                We may disclose your information if required by law (subpoena, court order), to protect legal rights, or to prevent harm to others. We will attempt to provide you with notice of such requests when legally permitted.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">4. Data Security & Protection</h2>
+          <div class="space-y-4">
+            <p class="text-txt-sec leading-relaxed mb-3">
+              We implement industry-standard security measures to protect your data:
+            </p>
+            <ul class="list-disc list-inside space-y-2 text-txt-sec ml-2">
+              <li><strong>Encryption at Rest:</strong> All sensitive data is encrypted using AES-256 encryption</li>
+              <li><strong>Encryption in Transit:</strong> All data transmitted between your device and our servers uses TLS 1.2 or higher (HTTPS)</li>
+              <li><strong>Secure Authentication:</strong> Passwords are hashed using industry-standard algorithms (bcrypt)</li>
+              <li><strong>Access Controls:</strong> Only authorized employees with legitimate need can access user data</li>
+              <li><strong>Multi-Factor Authentication:</strong> Available for additional account security</li>
+              <li><strong>Regular Security Audits:</strong> We conduct periodic security audits and penetration testing</li>
+              <li><strong>Incident Response:</strong> We have procedures in place to detect and respond to security breaches</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">5. Data Retention & Deletion</h2>
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">5.1 Retention Periods</h3>
+              <ul class="list-disc list-inside space-y-2 text-txt-sec ml-2">
+                <li><strong>Active Account Data:</strong> Retained while your account is active</li>
+                <li><strong>Session Metadata:</strong> Retained for 24 months to provide historical analytics</li>
+                <li><strong>AI Training Data:</strong> Anonymized metadata retained indefinitely for model improvement</li>
+                <li><strong>Account Information:</strong> Deleted within 30 days of account deletion request</li>
+                <li><strong>Backup Data:</strong> Retained for up to 90 days for disaster recovery purposes</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">5.2 Data Deletion</h3>
+              <p class="text-txt-sec leading-relaxed">
+                You can request deletion of your account and associated data at any time from your account settings. We will delete your personal data within 30 days, except where we're legally required to retain it (e.g., tax records).
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">5.3 Data Export</h3>
+              <p class="text-txt-sec leading-relaxed">
+                You can request a copy of your data in a portable format (JSON) from your account settings. We will provide this within 30 days of your request.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">6. Your Privacy Rights</h2>
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">6.1 General Rights (All Users)</h3>
+              <ul class="list-disc list-inside space-y-2 text-txt-sec ml-2">
+                <li>Right to access: Request a copy of your personal data</li>
+                <li>Right to correction: Update or correct inaccurate information</li>
+                <li>Right to deletion: Request deletion of your data ("right to be forgotten")</li>
+                <li>Right to data portability: Export your data in a standard format</li>
+                <li>Right to object: Object to certain types of data processing</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">6.2 EU/EEA Users (GDPR Rights)</h3>
+              <p class="text-txt-sec leading-relaxed mb-2">
+                If you're in the EU/EEA, you have additional rights under the General Data Protection Regulation (GDPR):
+              </p>
+              <ul class="list-disc list-inside space-y-2 text-txt-sec ml-2">
+                <li>Right to restrict processing of your data</li>
+                <li>Right to withdraw consent at any time</li>
+                <li>Right to lodge a complaint with your local data protection authority</li>
+                <li>Right to be informed about data breaches (within 72 hours)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">6.3 California Users (CCPA Rights)</h3>
+              <p class="text-txt-sec leading-relaxed mb-2">
+                If you're a California resident, you have rights under the California Consumer Privacy Act (CCPA):
+              </p>
+              <ul class="list-disc list-inside space-y-2 text-txt-sec ml-2">
+                <li>Right to know: What personal information we collect and how it's used</li>
+                <li>Right to delete: Request deletion of your personal information</li>
+                <li>Right to opt-out: Opt-out of any data sales (we don't sell, but you can request opt-out)</li>
+                <li>Right to non-discrimination: We won't discriminate against you for exercising these rights</li>
+                <li>Right to correct: Request correction of inaccurate personal information</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">6.4 How to Exercise Your Rights</h3>
+              <p class="text-txt-sec leading-relaxed">
+                To exercise any of these rights, contact us at <a href="mailto:preecodeai@gmail.com" class="text-accent hover:underline">preecodeai@gmail.com</a> with your request. We will respond within 30 days (45 days for CCPA requests).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">7. Cookies & Tracking</h2>
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">7.1 Cookies We Use</h3>
+              <ul class="list-disc list-inside space-y-2 text-txt-sec ml-2">
+                <li><strong>Authentication Cookies:</strong> Store your session token securely (HttpOnly, Secure, SameSite flags)</li>
+                <li><strong>Preference Cookies:</strong> Remember your theme preference (light/dark mode)</li>
+                <li><strong>Analytics Cookies:</strong> Analyze usage patterns to improve the service (optional, can be disabled)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">7.2 Third-Party Tracking</h3>
+              <p class="text-txt-sec leading-relaxed">
+                We do not use third-party tracking services, ads networks, or analytics providers (like Google Analytics). Your usage data remains within Preecode's systems only.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold text-txt mb-2">7.3 Cookie Controls</h3>
+              <p class="text-txt-sec leading-relaxed">
+                You can control cookies in your browser settings. Disabling cookies may affect your ability to use certain features of Preecode.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">8. Children's Privacy</h2>
+          <div class="space-y-4">
+            <p class="text-txt-sec leading-relaxed">
+              Preecode is not intended for users under 13 years old. We do not knowingly collect personal information from children under 13. If we become aware that a child under 13 has provided us with personal information, we will delete such information and terminate the child's account immediately. If you believe we have collected information from a child under 13, please contact us at <a href="mailto:preecodeai@gmail.com" class="text-accent hover:underline">preecodeai@gmail.com</a>.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">9. International Data Transfers</h2>
+          <div class="space-y-4">
+            <p class="text-txt-sec leading-relaxed">
+              Preecode operates servers in the United States. If you're located outside the US, your data will be transferred to and processed in the US. By using Preecode, you consent to this transfer. We rely on Standard Contractual Clauses (SCC) and other legal mechanisms approved by data protection authorities to ensure your data is adequately protected.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">10. Policy Updates & Changes</h2>
+          <div class="space-y-4">
+            <p class="text-txt-sec leading-relaxed">
+              We may update this Privacy Policy from time to time. We will notify you of material changes by email or by posting a prominent notice on our website. Your continued use of Preecode after changes become effective means you accept the updated policy. We recommend reviewing this policy periodically to stay informed about how we protect your privacy.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-txt mb-3">11. Contact & Data Protection Officer</h2>
+          <div class="space-y-4">
+            <p class="text-txt-sec leading-relaxed mb-4">
+              If you have questions about this Privacy Policy or how we handle your data, please contact us:
+            </p>
+            <div class="bg-th-surface border border-bdr rounded-lg p-6">
+              <p class="text-txt-sec mb-2"><strong>Email:</strong> <a href="mailto:preecodeai@gmail.com" class="text-accent hover:underline">preecodeai@gmail.com</a></p>
+              <p class="text-txt-sec mb-2"><strong>Company:</strong> Preecode</p>
+              <p class="text-txt-sec mb-4"><strong>Purpose:</strong> Developer Analytics Platform</p>
+              <p class="text-txt-sec text-sm">For privacy inquiries, requests under GDPR/CCPA, or data subject access requests, please email us with your request. We will respond within 30 days.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 p-6 bg-th-surface border border-bdr rounded-lg">
+          <p class="text-txt-sec text-sm">
+            <strong>Last Updated:</strong> April 16, 2026<br/>
+            <strong>Effective Date:</strong> April 16, 2026<br/>
+            <strong>Version:</strong> 1.0
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════ -->
+  <footer class="footer-main">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="preecode-logo logo-footer mb-3"><span class="brand-dark" style="font-size: 24px; font-weight: bold;">Pree</span><span class="brand-accent" style="font-size: 24px; font-weight: bold; color: #ff9500 !important;">code</span></div>
+          <p class="footer-desc">Developer activity analytics built into VS Code. Track sessions, measure growth, and prepare for placements.</p>
+        </div>
+
+        <nav class="footer-col">
+          <p class="footer-heading">Product</p>
+          <ul class="footer-links">
+            <li><a href="index.html#testimonials">Testimonials</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col">
+          <p class="footer-heading">Company</p>
+          <ul class="footer-links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="mailto:preecodeai@gmail.com">Contact</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col">
+          <p class="footer-heading">Legal</p>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+          <div class="footer-social">
+            <a href="https://x.com/preecodeai" target="_blank" rel="noopener noreferrer" aria-label="Visit Preecode on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="mailto:preecodeai@gmail.com" aria-label="Send email to Preecode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg></a>
+          </div>
+        </nav>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 Preecode. All rights reserved.</p><p class="footer-tagline">Built for developers.</p></div>
+    </div>
+  </footer>
+
+  <script>
+    var menuBtn = document.getElementById('mobile-menu-btn');
+    var mobileMenu = document.getElementById('mobile-menu');
+    if (menuBtn && mobileMenu) { menuBtn.addEventListener('click', function () { mobileMenu.classList.toggle('hidden'); }); }
+  </script>
+
+</body>
+</html>
