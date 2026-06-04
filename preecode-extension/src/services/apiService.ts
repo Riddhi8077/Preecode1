@@ -521,3 +521,23 @@ export async function sendProjectReviewRequest(
         throw new Error(msg || 'Could not reach project review service.');
     }
 }
+
+export async function sendProjectReviewRequestWithRetry(
+    context: vscode.ExtensionContext,
+    request: ProjectReviewRequest,
+    maxRetries: number = 2
+): Promise<any> {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            return await sendProjectReviewRequest(context, request);
+        } catch (error: any) {
+            const msg = String(error?.message || '');
+            // Don't retry on auth errors or permanent errors
+            if (msg.includes('Session expired') || msg.includes('login') || attempt === maxRetries) {
+                throw error;
+            }
+            // Wait before retry (exponential backoff)
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+    }
+}

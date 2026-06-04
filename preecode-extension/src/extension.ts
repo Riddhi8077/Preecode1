@@ -3028,10 +3028,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
           return;
         }
 
+        // Show analysis progress
+        const analysisMessage = `Analyzing ${filteredFiles.length} file(s)...`;
+
         await vscode.window.withProgress(
           {
             location: vscode.ProgressLocation.Notification,
-            title: 'Analyzing project...',
+            title: analysisMessage,
             cancellable: false
           },
           async () => {

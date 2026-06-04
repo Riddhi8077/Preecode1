@@ -283,3 +283,49 @@ export async function askReviewSource(): Promise<'workspace' | 'folder' | 'files
 
   return choice?.value as 'workspace' | 'folder' | 'files' | undefined;
 }
+
+// Batching logic for large projects
+export function createFileBatches(files: ProjectFile[], batchSize: number = 5): ProjectFile[][] {
+  const batches: ProjectFile[][] = [];
+  for (let i = 0; i < files.length; i += batchSize) {
+    batches.push(files.slice(i, i + batchSize));
+  }
+  return batches;
+}
+
+export interface BatchAnalysisResult {
+  batchNumber: number;
+  totalBatches: number;
+  findings: any[];
+  summary: any;
+}
+
+// Token estimation - rough heuristic to prevent token limit issues
+export function estimateTokenCount(content: string): number {
+  // Rough estimate: 1 token ≈ 4 characters
+  return Math.ceil(content.length / 4);
+}
+
+export function estimateFileTokens(files: ProjectFile[]): number {
+  let totalTokens = 0;
+  for (const file of files) {
+    totalTokens += estimateTokenCount(file.content);
+    totalTokens += estimateTokenCount(file.path); // Path counts too
+  }
+  return totalTokens;
+}
+
+// Max tokens for AI model (conservative: 2000 tokens max per request)
+export const MAX_TOKENS_PER_REQUEST = 2000;
+export const MAX_RESPONSE_TOKENS = 1500; // Leave room for response
+
+export function getOptimalBatchSize(files: ProjectFile[]): number {
+  const avgFileSize = files.reduce((sum, f) => sum + f.content.length, 0) / Math.max(1, files.length);
+  const avgFileTokens = estimateTokenCount('x'.repeat(Math.round(avgFileSize)));
+
+  // Estimate: roughly 1000 tokens for prompt + formatting
+  const availableForFiles = (MAX_TOKENS_PER_REQUEST - 1000) / avgFileTokens;
+
+  // Return at least 1, at most 10 files per batch
+  return Math.max(1, Math.min(10, Math.floor(availableForFiles)));
+}
