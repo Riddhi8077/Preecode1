@@ -19,6 +19,7 @@ const aiRoutes = require('./routes/aiRoutes');
 const earlyAccessRoutes = require('./routes/earlyAccessRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const githubAuthRoutes = require('./routes/githubAuthRoutes');
+const memoryRoutes = require('./routes/memoryRoutes');
 
 const errorHandler = require('./middleware/errorMiddleware');
 
@@ -105,6 +106,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/practice', practiceRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/memory', memoryRoutes);
 app.use('/api/early-access', earlyAccessRoutes);
 app.use('/api/upload', uploadRoutes);
 
