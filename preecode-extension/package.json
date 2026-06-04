@@ -47,6 +47,21 @@
           "type": "string",
           "default": "https://preecode.vercel.app",
           "description": "Base URL of the Preecode frontend website."
+        },
+        "preecode.learning.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable learning memory to track your errors and solutions."
+        },
+        "preecode.learning.autoNotify": {
+          "type": "boolean",
+          "default": true,
+          "description": "Notify when you encounter similar errors."
+        },
+        "preecode.learning.retentionDays": {
+          "type": "number",
+          "default": 180,
+          "description": "How long to keep learning memory entries (in days)."
         }
       }
     },
@@ -114,6 +129,36 @@
         "command": "preecode.restartTour",
         "title": "Preecode: Restart Tour",
         "icon": "$(play-circle)"
+      },
+      {
+        "command": "preecode.enableLearningMemory",
+        "title": "Preecode: Enable Learning Memory",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "preecode.disableLearningMemory",
+        "title": "Preecode: Disable Learning Memory",
+        "icon": "$(circle-slash)"
+      },
+      {
+        "command": "preecode.memorySettings",
+        "title": "Preecode: Learning Memory Settings",
+        "icon": "$(settings)"
+      },
+      {
+        "command": "preecode.exportMemory",
+        "title": "Preecode: Export Learning Memory",
+        "icon": "$(export)"
+      },
+      {
+        "command": "preecode.deleteMemory",
+        "title": "Preecode: Delete All Memory",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "preecode.viewMemoryHistory",
+        "title": "Preecode: View Memory History",
+        "icon": "$(history)"
       }
     ],
     "menus": {}

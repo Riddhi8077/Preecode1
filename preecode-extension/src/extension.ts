@@ -11,6 +11,8 @@ import { ControlCenterViewProvider } from './views/controlCenterView';
 import { OnboardingService } from './onboarding/onboardingService';
 import * as projectReviewService from './services/projectReviewService';
 import { ProjectReviewPanel } from './panels/projectReviewPanel';
+import { getLearningMemoryService } from './services/learningMemoryService';
+import { MemorySettingsPanel } from './panels/memorySettingsPanel';
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env')
@@ -1376,6 +1378,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const timerService = new PracticeTimerService();
   const runDetectionService = new RunDetectionService(timerService);
   const backendSyncService = new BackendSyncService();
+  const memoryService = getLearningMemoryService();
+
+  // Initialize learning memory service (feature is disabled by default)
+  await memoryService.initialize(context);
   const latestSolutionByFile = new Map<string, string>();
   const plainSolutionBackupByFile = new Map<string, string>();
   const explainedSolutionByFile = new Map<string, string>();
@@ -1419,7 +1425,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   context.subscriptions.push(
     vscode.window.registerUriHandler(authManager),
     timerService,
-    backendSyncService
+    backendSyncService,
+    {
+      dispose: () => memoryService.dispose()
+    }
   );
 
   await authManager.restoreSession();
@@ -3080,6 +3089,42 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       }));
       // Show info message
       void vscode.window.showInformationMessage('Tour restarted! Open the Preecode sidebar to begin.');
+    }),
+    vscode.commands.registerCommand('preecode.enableLearningMemory', async () => {
+      const config = vscode.workspace.getConfiguration('preecode.learning');
+      await config.update('enabled', true, vscode.ConfigurationTarget.Global);
+      await memoryService.updateSettings({ enabled: true });
+      vscode.window.showInformationMessage('Learning Memory enabled. Your coding journey is now being tracked.');
+    }),
+    vscode.commands.registerCommand('preecode.disableLearningMemory', async () => {
+      const config = vscode.workspace.getConfiguration('preecode.learning');
+      await config.update('enabled', false, vscode.ConfigurationTarget.Global);
+      await memoryService.updateSettings({ enabled: false });
+      vscode.window.showInformationMessage('Learning Memory disabled.');
+    }),
+    vscode.commands.registerCommand('preecode.memorySettings', async () => {
+      const settings = memoryService.getSettings();
+      MemorySettingsPanel.render(context, context.extensionUri, settings, async (newSettings) => {
+        await memoryService.updateSettings(newSettings);
+      });
+    }),
+    vscode.commands.registerCommand('preecode.exportMemory', async () => {
+      const data = await memoryService.exportMemory(context);
+      if (data) {
+        // In production, would save to file
+        vscode.window.showInformationMessage(`Memory exported: ${JSON.stringify(data.summary)}`);
+      }
+    }),
+    vscode.commands.registerCommand('preecode.deleteMemory', async () => {
+      await memoryService.deleteMemory(context);
+    }),
+    vscode.commands.registerCommand('preecode.viewMemoryHistory', async () => {
+      const history = await memoryService.getHistory(context, 1);
+      if (history.length === 0) {
+        vscode.window.showInformationMessage('No learning memory recorded yet.');
+        return;
+      }
+      vscode.window.showInformationMessage(`Viewing ${history.length} memory entries.`);
     })
   );
 
