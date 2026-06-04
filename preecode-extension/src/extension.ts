@@ -45,7 +45,7 @@ interface QuickActionPayload {
   difficulty?: 'easy' | 'medium' | 'hard';
 }
 
-type ToolAction = 'debug' | 'fix' | 'explain' | 'review';
+type ToolAction = 'debug' | 'fix' | 'explain' | 'review' | 'reviewProject';
 
 type FullQuickAction = PracticeAction | ToolAction;
 
@@ -2674,6 +2674,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       await replaceDocument(active, next);
       reviewBlockByFile.set(fileKey, block);
       await backendSyncService.sync('major-event');
+      return;
+    }
+
+    if (action === 'reviewProject') {
+      // Handle project review - this is dispatched from control center
+      // The actual command handling is in preecode.reviewProject command
+      await vscode.commands.executeCommand('preecode.reviewProject');
       return;
     }
   };

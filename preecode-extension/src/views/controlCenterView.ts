@@ -5,7 +5,7 @@ import { getFrontendUrl } from '../services/apiService';
 
 export interface ControlCenterHandlers {
   onQuickAction: (request: {
-    action: 'practice' | 'practiceSeries' | 'generate' | 'detect' | 'debug' | 'fix' | 'explain' | 'review' | 'explainQuestion' | 'showHint' | 'showSolution' | 'explainSolution' | 'evaluateCode' | 'differentApproach' | 'saveQuestion';
+    action: 'practice' | 'practiceSeries' | 'generate' | 'detect' | 'debug' | 'fix' | 'explain' | 'review' | 'reviewProject' | 'explainQuestion' | 'showHint' | 'showSolution' | 'explainSolution' | 'evaluateCode' | 'differentApproach' | 'saveQuestion';
     payload?: {
       language?: string;
       difficulty?: 'easy' | 'medium' | 'hard';
@@ -58,7 +58,7 @@ export class ControlCenterViewProvider implements vscode.WebviewViewProvider {
     view.webview.onDidReceiveMessage(async (message: { type: string; payload?: any; action?: string; height?: number; startLine?: number; endLine?: number; direction?: 'prev' | 'next' }) => {
       if (message.type === 'quickAction' && message.action) {
         await this.handlers.onQuickAction({
-          action: message.action as 'practice' | 'generate' | 'detect' | 'debug' | 'fix' | 'explain' | 'review' | 'explainQuestion' | 'showHint' | 'showSolution' | 'explainSolution' | 'evaluateCode' | 'differentApproach' | 'saveQuestion',
+          action: message.action as 'practice' | 'generate' | 'detect' | 'debug' | 'fix' | 'explain' | 'review' | 'reviewProject' | 'explainQuestion' | 'showHint' | 'showSolution' | 'explainSolution' | 'evaluateCode' | 'differentApproach' | 'saveQuestion',
           payload: message.payload
         });
         return;
@@ -212,6 +212,7 @@ export class ControlCenterViewProvider implements vscode.WebviewViewProvider {
         <button class="primary-btn" data-action="fix">Fix Code</button>
         <button id="explainSelectionBtn" class="primary-btn" data-action="explain">Explain Selection</button>
         <button id="reviewCodeBtn" class="primary-btn" data-action="review">Review Code</button>
+        <button id="reviewProjectBtn" class="primary-btn" data-action="reviewProject">Review Project</button>
       </div>
       <div id="problemInCodeLabel" class="section-label normal insight-title hidden">Problem In Code</div>
       <div class="ghost-line hidden" id="problemInCodeLine"></div>
