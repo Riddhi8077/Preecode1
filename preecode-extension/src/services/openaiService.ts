@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
-const OPENROUTER_MODEL = 'openai/gpt-oss-120b';
+const OPENROUTER_MODEL = 'deepseek/deepseek-r1:free';
 
 function getOpenRouterApiKey(): string {
     const apiKey = String(process.env.OPENROUTER_API_KEY || '').trim();
@@ -119,7 +119,7 @@ ${safeLanguage === 'python' ? `- For Python: Add execution block as:
                     }
                 ],
                 temperature: 0.9,
-                max_tokens: 1500,
+                max_tokens: 700,
             }),
         });
 

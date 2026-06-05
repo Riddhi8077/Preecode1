@@ -15,10 +15,10 @@ async function generateResponse(messages, options = {}) {
     console.log('Using OpenRouter API');
 
     const requestBody = {
-      model: 'openai/gpt-oss-120b',
+      model: 'deepseek/deepseek-r1:free',
       messages: messages,
       temperature: options.temperature || 0.7,
-      max_tokens: options.maxTokens || 2048,
+      max_tokens: options.maxTokens || 700,
     };
 
     const response = await fetch(
