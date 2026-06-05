@@ -11,10 +11,10 @@ const validateMongoURI = (uri) => {
   // Detect accidental whitespace or line breaks
   const trimmed = uri.trim();
   if (trimmed !== uri) {
-    console.warn('WARNING: MONGO_URI contains leading/trailing whitespace — auto-trimmed');
+    console.warn('WARNING: MONGO_URI contains leading/trailing whitespace - auto-trimmed');
   }
   if (/[\r\n]/.test(trimmed)) {
-    console.error('MONGO_URI contains line breaks — fix your .env file');
+    console.error('MONGO_URI contains line breaks - fix your .env file');
     process.exit(1);
   }
 
@@ -27,7 +27,7 @@ const validateMongoURI = (uri) => {
   // Check for database name in URI
   const dbMatch = trimmed.match(/\.mongodb\.net\/([^?]*)/);
   if (dbMatch && !dbMatch[1]) {
-    console.warn('WARNING: No database name specified in MONGO_URI — MongoDB will use "test" by default');
+    console.warn('WARNING: No database name specified in MONGO_URI - MongoDB will use "test" by default');
   }
 
   // Detect special characters in password that need URL-encoding

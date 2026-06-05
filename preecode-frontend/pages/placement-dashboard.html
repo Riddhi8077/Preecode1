@@ -69,7 +69,7 @@
               <div class="dash-v4-stat__row">
                 <span class="dash-v4-stat__num" id="problemsSolved">0</span>
               </div>
-              <div class="dash-v4-stat__trend neutral" id="diffBreakdown"><span>—</span></div>
+              <div class="dash-v4-stat__trend neutral" id="diffBreakdown"><span>-</span></div>
             </div>
             <div class="dash-v4-stat tint-purple">
               <div class="dash-v4-stat__accent"></div>
@@ -97,7 +97,7 @@
             <div class="readiness-bar-track mb-2">
               <div class="readiness-bar-fill bg-accent" id="readinessBarFull" style="width:0%"></div>
             </div>
-            <p class="text-xs text-txt-muted mb-4" id="readinessLabel">0% — Keep going!</p>
+            <p class="text-xs text-txt-muted mb-4" id="readinessLabel">0% - Keep going!</p>
 
             <p class="text-xs font-semibold text-txt-muted uppercase tracking-wider mb-2">Improvement Plan</p>
             <ul class="space-y-2" id="improvementList"></ul>
@@ -179,7 +179,7 @@
       document.getElementById('readinessBar').style.width = pct + '%';
       document.getElementById('readinessBarFull').style.width = pct + '%';
       document.getElementById('readinessLabel').textContent =
-        pct + '% — ' + (pct < 40 ? 'Keep going!' : pct < 70 ? 'Good progress!' : 'Placement ready!');
+        pct + '% - ' + (pct < 40 ? 'Keep going!' : pct < 70 ? 'Good progress!' : 'Placement ready!');
 
       document.getElementById('problemsSolved').textContent = data.breakdown?.totalSolved || 0;
       document.getElementById('diffBreakdown').innerHTML =
@@ -235,7 +235,7 @@
           <td>${new Date(rv.uploadedAt).toLocaleDateString()}</td>
           <td class="max-w-[120px] truncate" title="${rv.fileName}">${rv.fileName}</td>
           <td>${rv.atsScore}</td>
-          <td>—</td>
+          <td>-</td>
           <td><a href="/pages/resume-analysis.html?id=${rv._id}" class="text-accent hover:underline text-xs">View</a></td>`;
         tbody.appendChild(tr);
       });

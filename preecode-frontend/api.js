@@ -36,7 +36,7 @@ var Api = {
       if (data.avatar) localStorage.setItem('preecode_avatar', data.avatar);
       return data;
     }).catch(function (err) {
-      if (err instanceof TypeError) throw new Error('Network error — could not reach server');
+      if (err instanceof TypeError) throw new Error('Network error - could not reach server');
       throw err;
     });
   },
@@ -56,7 +56,7 @@ var Api = {
       if (data.avatar) localStorage.setItem('preecode_avatar', data.avatar);
       return data;
     }).catch(function (err) {
-      if (err instanceof TypeError) throw new Error('Network error — could not reach server');
+      if (err instanceof TypeError) throw new Error('Network error - could not reach server');
       throw err;
     });
   },

@@ -311,7 +311,7 @@
               '</div>',
               '<div class="pc-option-body">',
                 '<span class="pc-option-title">Practice Here</span>',
-                '<span class="pc-option-desc">Online compiler — write, run & save code in your browser</span>',
+                '<span class="pc-option-desc">Online compiler - write, run & save code in your browser</span>',
               '</div>',
               '<svg class="pc-option-arrow" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>',
             '</a>',

@@ -130,7 +130,7 @@
     catch (e) { return null; }
   }
 
-  // Migrate legacy 'system' value — treat as no preference
+  // Migrate legacy 'system' value - treat as no preference
   var raw = getStored();
   if (raw === 'system') {
     try { localStorage.removeItem('preecode_theme'); } catch (e) {}

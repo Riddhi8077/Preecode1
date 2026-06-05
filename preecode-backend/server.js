@@ -18,13 +18,13 @@ const practiceRoutes = require('./routes/practiceRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const earlyAccessRoutes = require('./routes/earlyAccessRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
-const githubAuthRoutes = require('./routes/githubAuthRoutes');
+// const githubAuthRoutes = require('./routes/githubAuthRoutes');
 const memoryRoutes = require('./routes/memoryRoutes');
 
 const errorHandler = require('./middleware/errorMiddleware');
 
 process.on('uncaughtException', (err) => {
-  console.error('UNCAUGHT EXCEPTION — shutting down...');
+  console.error('UNCAUGHT EXCEPTION - shutting down...');
   console.error(err.name, err.message);
   process.exit(1);
 });
@@ -159,7 +159,7 @@ const startServer = async () => {
   console.log(`Server running on port ${port}`);
 
   process.on('unhandledRejection', (err) => {
-    console.error('UNHANDLED REJECTION — shutting down...');
+    console.error('UNHANDLED REJECTION - shutting down...');
     console.error(err.name, err.message);
     server.close(() => process.exit(1));
   });

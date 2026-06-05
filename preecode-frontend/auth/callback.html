@@ -9,7 +9,7 @@
 <body>
   <div id="container" style="text-align:center;max-width:520px;padding:24px">
     <h2 id="title" style="margin-bottom:8px">Signing you in…</h2>
-    <p id="msg" style="color:#9ca3af">Please wait — finishing authentication.</p>
+    <p id="msg" style="color:#9ca3af">Please wait - finishing authentication.</p>
     <div id="actions" style="margin-top:18px;display:none">
       <a id="goLogin" href="/login.html" style="color:#ffa116;margin-right:12px;text-decoration:none">Go to Sign In</a>
       <a id="goHome" href="/" style="color:#9ca3af;text-decoration:none">Return Home</a>
@@ -62,7 +62,7 @@
             var sep = decodedRedirect.indexOf('?') === -1 ? '?' : '&';
             var vscodeDeepLink = decodedRedirect + sep + 'token=' + encodeURIComponent(token);
 
-            msg.textContent = 'Signed in — opening VS Code...';
+            msg.textContent = 'Signed in - opening VS Code...';
 
             // Try to open VS Code via the deep link
             setTimeout(function () {
@@ -115,7 +115,7 @@
           }
 
           // Navigate to dashboard (no automatic VS Code deep-link open).
-          msg.textContent = 'Signed in — redirecting to dashboard...';
+          msg.textContent = 'Signed in - redirecting to dashboard...';
           // remove token from URL for cleanliness
           params.delete('token');
           var newSearch = params.toString();
@@ -124,7 +124,7 @@
           return;
         }
 
-        // No token & no error — show actions to let user continue to login
+        // No token & no error - show actions to let user continue to login
         title.textContent = 'Authentication incomplete';
         msg.textContent = 'No authentication token was returned. Please sign in manually.';
         document.getElementById('actions').style.display = 'block';

@@ -99,7 +99,7 @@
       }
     })
     .catch(function () {
-      // Silently fail — form remains with defaults
+      // Silently fail - form remains with defaults
     });
 
   // Username validation

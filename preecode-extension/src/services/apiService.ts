@@ -182,7 +182,7 @@ export async function sendPracticeData(
     context: vscode.ExtensionContext,
     data: PracticeData
 ): Promise<boolean> {
-    // Get stored token — if missing, user is not logged in
+    // Get stored token - if missing, user is not logged in
     const token = await getToken(context);
 
     if (!token) {
@@ -202,7 +202,7 @@ export async function sendPracticeData(
             body: JSON.stringify(data)
         });
 
-        // Phase 4: 401 means token is expired or invalid — auto logout
+        // Phase 4: 401 means token is expired or invalid - auto logout
         if (response.status === 401) {
             await deleteToken(context);
             vscode.window.showErrorMessage(
@@ -227,7 +227,7 @@ export async function sendPracticeData(
 
         // Notify user of saved practice (non-blocking)
         try {
-            vscode.window.showInformationMessage(`preecode: Practice saved — ${data.timeTaken}`);
+            vscode.window.showInformationMessage(`preecode: Practice saved - ${data.timeTaken}`);
         } catch (e) {
             console.log('Could not show notification:', e);
         }
@@ -235,7 +235,7 @@ export async function sendPracticeData(
         return true;
 
     } catch (error: any) {
-        // Phase 4: Network failure or fetch error — show message, do not crash
+        // Phase 4: Network failure or fetch error - show message, do not crash
         vscode.window.showErrorMessage(
             'preecode: Could not reach server. Practice data not saved. Check your connection.'
         );
@@ -380,7 +380,7 @@ export async function generateQuestionFromBackend(
         return ensureQuestionBlock(String(payload?.question || ''));
     } catch (error: any) {
         const msg = String(error?.message || '');
-        // Re-throw auth errors immediately — no point in fallback
+        // Re-throw auth errors immediately - no point in fallback
         if (msg.includes('Session expired') || msg.includes('login')) {
             throw error;
         }

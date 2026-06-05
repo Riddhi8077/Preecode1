@@ -10,7 +10,7 @@ const OPENROUTER_MODELS = [
 
 const MAX_RETRIES = 3;
 const RETRY_DELAYS_MS = [800, 2000, 4000];
-const REQUEST_TIMEOUT_MS = 45000;  // 45s — free models can be slow
+const REQUEST_TIMEOUT_MS = 45000;  // 45s - free models can be slow
 const MIN_REQUEST_SPACING_MS = 200;
 
 let lastRequestAtMs = 0;
@@ -194,7 +194,7 @@ async function call_openrouter(messages, options = {}) {
 
         if (!response.ok) {
           const providerMessage = parsedBody?.error?.message || `OpenRouter HTTP ${response.status}`;
-          // 402 = credits needed, 404 = model not found/removed — skip to next model immediately
+          // 402 = credits needed, 404 = model not found/removed - skip to next model immediately
           // 429 = rate limit (could be daily limit on free tier)
           const skipImmediately = response.status === 402 || response.status === 404;
           const isRateLimit = response.status === 429 || providerMessage.includes('Rate limit exceeded') || providerMessage.includes('free-models-per-day');
@@ -415,9 +415,9 @@ async function generateQuestion(language, difficulty, topic) {
   };
 
   const difficultyContext = {
-    easy: 'basic loops, arrays, or string manipulation — solvable in under 15 min',
-    medium: 'hashmaps, recursion, or sorting — solvable in 20-30 min',
-    hard: 'dynamic programming, graphs, or trees — solvable in 40-60 min',
+    easy: 'basic loops, arrays, or string manipulation - solvable in under 15 min',
+    medium: 'hashmaps, recursion, or sorting - solvable in 20-30 min',
+    hard: 'dynamic programming, graphs, or trees - solvable in 40-60 min',
   }[safeDifficulty] || 'intermediate level';
 
   const prompt = `You are a coding interview coach at ${safeCompany}.

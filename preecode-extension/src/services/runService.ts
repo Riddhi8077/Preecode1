@@ -44,7 +44,7 @@ export async function runActiveFile(): Promise<RunResult> {
         let terminalCommand = "";
 
         if (config.compile) {
-            // Compile first, then run — joined with && so run only happens on success
+            // Compile first, then run - joined with && so run only happens on success
             // e.g. Java:  javac file.java && java -cp /dir ClassName
             // e.g. C/C++: gcc file.c -o output && ./output
             const compileCmd = `${config.compile.command} ${config.compile.args.join(" ")}`;
@@ -69,11 +69,11 @@ export async function runActiveFile(): Promise<RunResult> {
         // Show the terminal panel so user sees output (true = keep editor focus)
         terminal.show(true);
 
-        // Fire the command — user sees real-time output just like Code Runner
+        // Fire the command - user sees real-time output just like Code Runner
         terminal.sendText(terminalCommand);
 
         // Return success immediately so extension.ts stops the timer.
-        // We don't await terminal exit — the terminal is live and interactive.
+        // We don't await terminal exit - the terminal is live and interactive.
         return {
             success: true,
             output: "Running in terminal..."

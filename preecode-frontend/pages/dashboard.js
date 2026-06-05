@@ -121,7 +121,7 @@
     // Avg Solve Time (populated by PracticePanel)
     animateNumber($('statTime'), 0);
 
-    // Placement Readiness — fetch from v2 API
+    // Placement Readiness - fetch from v2 API
     var readiness = 0;
     var readTrend = $('readinessTrend');
     // Try to load from v2 readiness API
@@ -599,7 +599,7 @@
         var lastTotal = parseInt(localStorage.getItem('preecode_last_total') || '0', 10);
         var newTotal  = data.totalSolved || 0;
         if (newTotal > lastTotal && lastTotal > 0 && window.preecodeNotify) {
-          window.preecodeNotify('Dashboard updated — ' + newTotal + ' problems solved (+' + (newTotal - lastTotal) + ')!', 'success');
+          window.preecodeNotify('Dashboard updated - ' + newTotal + ' problems solved (+' + (newTotal - lastTotal) + ')!', 'success');
         }
         localStorage.setItem('preecode_last_total', newTotal);
       } catch(e) {}

@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 
-// Secret storage key — consistent across all auth operations
+// Secret storage key - consistent across all auth operations
 const TOKEN_KEY = 'CFX_AUTH_TOKEN';
 
 /**
  * Saves the JWT token securely using VS Code's SecretStorage.
- * SecretStorage is encrypted on disk by VS Code — safe for tokens.
+ * SecretStorage is encrypted on disk by VS Code - safe for tokens.
  */
 export async function saveToken(
     context: vscode.ExtensionContext,
@@ -37,7 +37,7 @@ export async function deleteToken(
 
 /**
  * Returns true if a token is currently stored.
- * Does NOT validate the token against the server —
+ * Does NOT validate the token against the server -
  * validation happens implicitly on the first API call.
  */
 export async function isLoggedIn(

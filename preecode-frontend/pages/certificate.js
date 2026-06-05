@@ -21,7 +21,7 @@
         if (nameEl) nameEl.textContent = cap(user.username || 'Developer');
 
         var idEl = document.getElementById('certId');
-        if (idEl) idEl.textContent = data.certificateId || '—';
+        if (idEl) idEl.textContent = data.certificateId || '-';
 
         var dateEl = document.getElementById('certDate');
         if (dateEl) {
@@ -77,7 +77,7 @@
       var shareUrl = (typeof window !== 'undefined' && window.PREECODE_CONFIG && window.PREECODE_CONFIG.FRONTEND_URL)
         ? window.PREECODE_CONFIG.FRONTEND_URL
         : 'https://preecode.vercel.app';
-      var text = 'I earned Founding Member status on Preecode — a developer practice tracking tool built into VS Code.\n\nJoin the early access:\n' + shareUrl;
+      var text = 'I earned Founding Member status on Preecode - a developer practice tracking tool built into VS Code.\n\nJoin the early access:\n' + shareUrl;
       window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(shareUrl), '_blank', 'width=600,height=500');
     });
   }

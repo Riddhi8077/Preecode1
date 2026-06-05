@@ -136,7 +136,7 @@
       const { interview, answers } = data;
 
       document.getElementById('overallScore').textContent = interview.overallScore || 0;
-      document.getElementById('interviewTitle').textContent = interview.role + ' — ' + interview.difficulty;
+      document.getElementById('interviewTitle').textContent = interview.role + ' - ' + interview.difficulty;
       document.getElementById('interviewMeta').textContent =
         'Completed ' + new Date(interview.completedAt || interview.createdAt).toLocaleDateString();
 
@@ -161,7 +161,7 @@
             <div class="accordion-body px-4 pb-4 space-y-3">
               <div>
                 <p class="text-xs font-medium text-txt-muted mb-1">Transcript</p>
-                <p class="text-txt text-sm leading-relaxed">${ans.transcription || '—'}</p>
+                <p class="text-txt text-sm leading-relaxed">${ans.transcription || '-'}</p>
               </div>
               <div class="flex flex-wrap gap-2">
                 <span class="metric-pill bg-blue-500/10 text-blue-400">Speech: ${ans.speechMetrics?.speechRate||0} wpm</span>
@@ -171,7 +171,7 @@
               </div>
               <div>
                 <p class="text-xs font-medium text-txt-muted mb-1">AI Feedback</p>
-                <p class="text-txt text-sm leading-relaxed">${ans.aiFeedback || '—'}</p>
+                <p class="text-txt text-sm leading-relaxed">${ans.aiFeedback || '-'}</p>
               </div>
             </div>`;
           list.appendChild(item);
