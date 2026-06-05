@@ -17,7 +17,7 @@ async function generateResponse(messages, options = {}) {
     console.log('Using OpenRouter API');
 
     const requestBody = {
-      model: 'meta-llama/llama-2-70b-chat:free',
+      model: 'google/gemma-3-27b-it:free',
       messages: messages,
       temperature: options.temperature || 0.7,
       max_tokens: options.maxTokens || 700,
