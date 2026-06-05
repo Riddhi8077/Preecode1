@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
-const OPENROUTER_MODEL = 'meta-llama/llama-2-70b-chat:free';
+const OPENROUTER_MODEL = 'google/gemma-3-27b-it:free';
 
 function getOpenRouterApiKey(): string {
     const apiKey = String(process.env.OPENROUTER_API_KEY || '').trim();
